@@ -1,5 +1,4 @@
-﻿
-using BlueStarMVC.Models;
+﻿using BlueStarMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -23,12 +22,11 @@ namespace BlueStarMVC.Pages.Server.Controllers
         {
             int[] month = new int[12];
 
-            var result = from ticket in _dbContext.Tickets
-                         join chuyenBay in _dbContext.Chuyenbays on ticket.FlyId equals chuyenBay.FlyId
+            var result = from chuyenBay in _dbContext.Chuyenbays 
                          where chuyenBay.DepartureDay.Substring(0, 4) == year
                          select new
                          {
-                             ticket.FlyId,
+                             chuyenBay.FlyId,
                              chuyenBay.DepartureDay
                          };
 
@@ -62,11 +60,11 @@ namespace BlueStarMVC.Pages.Server.Controllers
                              {
                                  ticket.FlyId,
                                  chuyenBay.DepartureDay,
-                                 chuyenBay.OriginalPrice
+                                 ticket.TicketPrice
                              };
 
                 // Calculate total revenue for the year
-                decimal totalRevenue = result.Sum(item => (decimal) item.OriginalPrice);
+                decimal totalRevenue = result.Sum(item => (decimal) item.TicketPrice);
 
                 var details = _dbContext.Tickets
             .Join(
@@ -80,7 +78,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     Name = ticket.Name,
                     FlyId = flight.FlyId,
                     DepartureDay = flight.DepartureDay,
-                    Price = flight.OriginalPrice
+                    Price = ticket.TicketPrice
                 }
             )
             .Where(item => item.DepartureDay.Substring(0, 4) == year)
@@ -118,10 +116,11 @@ namespace BlueStarMVC.Pages.Server.Controllers
                              {
                                  ticket.FlyId,
                                  chuyenBay.DepartureDay,
-                                 chuyenBay.OriginalPrice
+                                 ticket.TicketPrice
                              };
 
-                decimal totalRevenue = (decimal) result.Sum(item => item.OriginalPrice);
+                decimal totalRevenue = (decimal) result.Sum(item => item.TicketPrice);
+                int sovetrongthang = result.Count();
 
                 var details = _dbContext.Tickets
             .Join(
@@ -135,14 +134,14 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     Name = ticket.Name,
                     FlyId = flight.FlyId,
                     DepartureDay = flight.DepartureDay,
-                    Price = flight.OriginalPrice
+                    Price = ticket.TicketPrice
                 }
             )
             .Where(item => item.DepartureDay.Substring(0, 4) == year && item.DepartureDay.Substring(5, 2) == month)
             .ToList();
 
                 // You can return the result along with the total revenue
-                return Ok(new { TotalRevenue = totalRevenue, Details = details });
+                return Ok(new { TotalRevenue = totalRevenue, Details = details , Sovetrongthang = sovetrongthang});
             }
             catch (Exception ex)
             {

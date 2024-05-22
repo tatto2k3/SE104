@@ -13,6 +13,7 @@ const ThemVe = () => {
     const [sdt, setSdt] = useState("");
     const [flyIDs, setFlyIDs] = useState([]);
     const [seatIDs, setSeatIDs] = useState([]);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         fetch("/api/chuyenbaysanbay/GetFlyID")
@@ -57,7 +58,14 @@ const ThemVe = () => {
                 return;
             }
 
-            alert("Ticket added successfully");
+            setShowSuccessMessage(true);
+            setFlyId("");
+            setTId("");
+            setCccd("");
+            setSdt("");
+            setName("");
+            setSeatTypeID("");
+            setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
             console.log("Error:", error.message);
             alert(error);
@@ -72,6 +80,11 @@ const ThemVe = () => {
 
     return (
         <div className="container-fluid">
+            {showSuccessMessage && (
+                <div className="alert alert-success mt-3" role="alert">
+                    Thêm vé thành công!
+                </div>
+            )}
             <div className="logo-container">
                 <div className="logo-inner">
                     <img src={logo2} alt="Logo" className="logo-img" />

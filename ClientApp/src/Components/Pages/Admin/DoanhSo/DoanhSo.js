@@ -14,6 +14,7 @@ const DoanhSo = () => {
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
     const [doanhthu, setDoanhThu] = useState(0);
+    const [sovetrongthang, setSovetrongthang] = useState(0);
     const [detail, setDetails] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(8);
@@ -48,7 +49,7 @@ const DoanhSo = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/doanhthu/GetDetails");
+                const response = await fetch("/api/doanhthu/GetDoanhSo?year=2024");
                 const data = await response.json();
                 console.log(data);
                 setDetails(data);
@@ -59,7 +60,6 @@ const DoanhSo = () => {
         };
 
         fetchData();
-        fetchDoanhSoData();
     }, [year, month, reportType]);
 
 
@@ -103,8 +103,12 @@ const DoanhSo = () => {
             setDoanhThu(data.totalRevenue);
             setDetails(data.details);
             console.log("After setdetails:", detail);
-            tongdoanhthu = data;
+
+            tongdoanhthu = data.totalRevenue;
             console.log("After setDoanhThu:", doanhthu);
+            console.log(tongdoanhthu);
+
+            if (reportType === "thang") setSovetrongthang(data.sovetrongthang);
             
         } catch (error) {
             console.error("Error fetching doanh so data:", error);
@@ -124,9 +128,9 @@ const DoanhSo = () => {
         pdf.setFont(font);
         // Title
         pdf.setFontSize(18);
-        pdf.text("BIEU DO DOANH SO CONG TY", 70, 10);
+        pdf.text("THONG KE DOANH SO CONG TY", 70, 10);
         pdf.setFontSize(12);
-        pdf.text(`Tong doanh thu: ${tongdoanhthu}`, 10, 20);
+        pdf.text(`Tong doanh thu: ${doanhthu}`, 10, 20);
 
         // Date
         const currentDate = new Date();
@@ -168,7 +172,7 @@ const DoanhSo = () => {
                   data={{
                       labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11','Tháng 12'],
                       datasets: [{
-                          label: 'Doanh số',
+                          label: 'Số chuyến bay',
                           backgroundColor: 'rgba(75,192,192,0.2)',
                           borderColor: 'rgba(75,192,192,1)',
                           borderWidth: 1,
@@ -288,7 +292,21 @@ const DoanhSo = () => {
                             value={doanhthu}
                             readOnly
                         />
-            </div>
+    
+                    </div>
+                    <div className="form-group mt-3">
+                        <label htmlFor="ngayKetThuc" style={{ display: reportType === "thang" ? "block" : "none" }}>
+                            Tổng vé trong tháng
+                        </label>
+                        <input style={{ display: reportType === "thang" ? "block" : "none" }}
+                            type="text"
+                            className="form-control ml-3"
+                            id="sove"
+                            value={sovetrongthang}
+                            readOnly
+                        />
+                    </div>
+
           </div>
           {/* Bảng hiển thị dữ liệu */}
           <div className="container mt-md-4">

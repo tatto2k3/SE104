@@ -13,7 +13,7 @@ namespace BlueStarMVC.Models
         public string? DepartureTime { get; set; }
         public string? DepartureDay { get; set; }
         public string? FlightTime { get; set; } // Thời gian bay
-        public int? SeatEmpty { get; set; } // Số lượng ghế hạng 1
-        public int? SeatBooked { get; set; } // Số lượng ghế hạng 2
+        public int? SeatEmpty { get; set; } = Storage.Seat1Before + Storage.Seat2Before;
+        public int? SeatBooked { get; set; } = 0;
     }
 }

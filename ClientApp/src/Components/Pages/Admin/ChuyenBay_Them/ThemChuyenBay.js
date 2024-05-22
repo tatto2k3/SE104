@@ -1,4 +1,4 @@
-﻿import React, { useState ,useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import './ThemChuyenBay.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logo2 from '../../../../assets/logo2.PNG';
@@ -25,27 +25,39 @@ const ThemChuyenBay = () => {
 
     const handleSave = async () => {
         if (!isValidData()) {
-            alert("Invalid customer data");
+            alert("Invalid flight data");
             return;
         }
 
+
         const flightData = {
-            flyId: flyId ,
+            flyId: flyId,
             flightTime: flightTime,
-            fromLocation: fromLocation ,
-            toLocation: toLocation,  
+            fromLocation: fromLocation,
+            toLocation: toLocation,
             departureTime: departureTime,
             departureDay: departureDay,
             originalPrice: originalPrice,
         };
+
+        if (flightData.flightTime == "" || flightData.fromLocation == "" || flightData.toLocation == "" || flightData.departureTime == "" || flightData.departureDay == "" || flightData.originalPrice == "") {
+            alert("Hãy điền đầy đủ thông tin");
+            return;
+        }
+
+        if (flightData.fromLocation == flightData.toLocation) {
+            alert("Điểm đi và điểm đến không được trùng nhau.");
+            return;
+        }
+
         try {
-        const flightResponse = await fetch("api/chuyenbay/AddChuyenbay", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(flightData),
-        });
+            const flightResponse = await fetch("api/chuyenbay/AddChuyenbay", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(flightData),
+            });
             if (!flightResponse.ok) {
                 const flightError = await flightResponse.json();
                 console.error("Flight error:", flightError);
@@ -63,7 +75,7 @@ const ThemChuyenBay = () => {
             setDepartureTime("");
             setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
-            console.error("Error:", error);
+            alert("Error:", error.message);
         }
     };
 
@@ -72,6 +84,7 @@ const ThemChuyenBay = () => {
             flyId.trim() !== ""
         );
     };
+    const today = new Date().toISOString().split('T')[0];
 
     return (
         <div className="container-fluid">
@@ -114,7 +127,7 @@ const ThemChuyenBay = () => {
                                 onChange={(e) => setFromLocation(e.target.value)}
 
                             >
-                                <option value="">Chọn mã sân bay</option>
+                                <option value="">Chọn điểm đi</option>
                                 {listPlace.map(airportID => (
                                     <option key={airportID} value={airportID}>{airportID}</option>
                                 ))}
@@ -130,7 +143,7 @@ const ThemChuyenBay = () => {
                                 onChange={(e) => setToLocation(e.target.value)}
 
                             >
-                                <option value="">Chọn mã sân bay</option>
+                                <option value="">Chọn điểm đến</option>
                                 {listPlace.map(airportID => (
                                     <option key={airportID} value={airportID}>{airportID}</option>
                                 ))}
@@ -158,6 +171,7 @@ const ThemChuyenBay = () => {
                                 id="departureDay"
                                 placeholder="Ngày đi"
                                 value={departureDay}
+                                min={today}
                                 onChange={(e) => setDepartureDay(e.target.value)}
                             />
                         </div>
@@ -174,7 +188,7 @@ const ThemChuyenBay = () => {
                         </div>
                     </div>
                     <div className="row mb-3">
-                        
+
                         <div className="col-4">
                             <label htmlFor="originalPrice" className="form-label">Giá vé</label>
                             <input
@@ -186,7 +200,7 @@ const ThemChuyenBay = () => {
                                 onChange={(e) => setOriginalPrice(e.target.value)}
                             />
                         </div>
-                        
+
                     </div>
                     <div className="d-flex justify-content-center mt-3">
                         <button type="button" className="btn btn-primary" onClick={handleSave}>Lưu</button>

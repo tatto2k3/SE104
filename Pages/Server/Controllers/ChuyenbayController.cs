@@ -24,31 +24,22 @@ namespace BlueStarMVC.Pages.Server.Controllers
         public IActionResult GetChuyenbays()
         {
 
-            List<Chuyenbay> list = _dbContext.Chuyenbays.ToList();
+            List<Chuyenbay> list = _dbContext.Chuyenbays.OrderByDescending(cb => cb.DepartureDay).ToList();
 
             List<ChuyenbayDTO> chuyenbayDTOs = new List<ChuyenbayDTO>();
 
+            
+
+
             foreach (var chuyenbay in list)
             {
+                
+              
 
                 var trunggianList = _dbContext.Chuyenbay_Sanbays
                     .Where(cs => cs.FlyId == chuyenbay.FlyId)
                     .Select(cs => cs.AirportId)
                     .ToList();
-
-                int Seat1 = 0;
-                int Seat2 = 0;
-
-                var SeatType1Rule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Số lượng ghế hạng 1");
-                var SeatType2Rule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Số lượng ghế hạng 2");
-                if (SeatType1Rule != null) Seat1 = (int) SeatType1Rule.Value;
-                if (SeatType2Rule != null) Seat2 = (int) SeatType2Rule.Value;
-
-                
-
-                int SeatBookedRule = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
-
-                int SeatEmptyRule = Seat1 + Seat2 - SeatBookedRule;
 
 
 
@@ -61,9 +52,9 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     DepartureTime = chuyenbay.DepartureTime,
                     DepartureDay = chuyenbay.DepartureDay,
                     FlightTime = chuyenbay.FlightTime,
-                    SeatBooked = SeatBookedRule,
-                    SeatEmpty = SeatEmptyRule,
-                    TrungGian = trunggianList // Thêm danh sách sân bay trung gian vào DTO
+                    SeatBooked = chuyenbay.SeatBooked,
+                    SeatEmpty = chuyenbay.SeatEmpty,
+                    TrungGian = trunggianList 
                 };
 
                 // Thêm DTO vào danh sách chuyến bay kết quả
@@ -112,6 +103,12 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     int timeRule = (int) timeRuleParameter.Value;
                     if (timeFlight < timeRule) return StatusCode(500, "Thời gian bay nhỏ hơn thời gian bay tối thiểu.");
                 }
+
+                if (chuyenbay.ToLocation == chuyenbay.FromLocation)
+                {
+                    return StatusCode(500, "Điểm đến và điểm đi không được trùng nhau.");
+                }
+
 
                 _dbContext.Chuyenbays.Add(chuyenbay);
                 _dbContext.SaveChanges();

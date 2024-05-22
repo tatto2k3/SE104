@@ -32,7 +32,6 @@ public partial class BluestarContext : DbContext
     public DbSet<Chuyenbay_Sanbay> Chuyenbay_Sanbays { get; set; }
     public DbSet<Parameter> Parameters { get; set; }
 
-    public DbSet<Storage> Storages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -58,6 +57,9 @@ public partial class BluestarContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("PASSWORD");
         });
+
+
+
 
         modelBuilder.Entity<Chuyenbay>(entity =>
         {
@@ -249,6 +251,9 @@ public partial class BluestarContext : DbContext
             entity.Property(e => e.Value)
                 .HasColumnType("int")
                 .HasColumnName("value");
+            entity.Property(e => e.ValueBefore)
+                .HasColumnType("int")
+                .HasColumnName("valueBefore");
         });
 
 

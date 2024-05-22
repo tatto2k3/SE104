@@ -3,6 +3,8 @@ using BlueStarMVC.Pages.Server.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using System.Globalization;
 
 namespace BlueStarMVC.Pages.Server.Controllers
 {
@@ -79,6 +81,9 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     }
                     return BadRequest(ModelState);
                 }
+
+
+
                 // Tìm kiếm khách hàng dựa trên id (hoặc mã khách hàng, tùy thuộc vào cách bạn xác định)
                 var existingParameter = await _dbContext.Parameters.FindAsync(objParameter.Label);
 
@@ -87,6 +92,102 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     return NotFound("Parameter not found");
                 }
 
+                if (existingParameter.Label == "Số lượng ghế hạng 1")
+                {
+                    List<Chuyenbay> list = _dbContext.Chuyenbays.ToList();
+
+                    foreach (var chuyenbay in list)
+                    {
+                        int SeatBookedRule = 0;
+                        int SeatEmptyRule = 0;
+
+                        int Seat1 = 0;
+                        int Seat2 = 0;
+
+
+                        DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
+                        DateTime departureDay; // Đây là ngày hiện tại
+                        if (DateTime.TryParseExact(chuyenbay.DepartureDay, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out flightDay))
+                        {
+                            // Lấy ngày hiện tại
+                            departureDay = DateTime.Now.Date;
+
+                            // Lấy chỉ ngày của ngày khởi hành của chuyến bay
+                            DateTime flightDateOnly = flightDay.Date;
+
+                            // Tính toán độ chênh lệch giữa hai ngày
+                            TimeSpan difference = flightDateOnly - departureDay;
+
+                            // Lấy giá trị tuyệt đối của độ chênh lệch (nếu muốn)
+                            TimeSpan absoluteDifference = difference.Duration();
+
+                            if (difference.Days > 0)
+                            {
+                                int SeatType1Rule = (int)objParameter.Value;
+                                var SeatType2Rule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Số lượng ghế hạng 2");
+                                if (SeatType1Rule != null) Seat1 = SeatType1Rule;
+                                if (SeatType2Rule != null) Seat2 = (int)SeatType2Rule.Value;
+
+                                SeatBookedRule = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
+
+                                SeatEmptyRule = Seat1 + Seat2 - SeatBookedRule;
+
+                                chuyenbay.SeatEmpty = SeatEmptyRule;
+                                chuyenbay.SeatBooked = SeatBookedRule;
+                                Storage.Seat1Before = Seat1;
+                                Storage.Seat2Before = Seat2;
+                            }
+                        }
+                    }
+                }
+                if (existingParameter.Label == "Số lượng ghế hạng 2")
+                {
+                    List<Chuyenbay> list = _dbContext.Chuyenbays.ToList();
+
+                    foreach (var chuyenbay in list)
+                    {
+                        int SeatBookedRule = 0;
+                        int SeatEmptyRule = 0;
+
+                        int Seat1 = 0;
+                        int Seat2 = 0;
+
+
+                        DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
+                        DateTime departureDay; // Đây là ngày hiện tại
+                        if (DateTime.TryParseExact(chuyenbay.DepartureDay, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out flightDay))
+                        {
+                            // Lấy ngày hiện tại
+                            departureDay = DateTime.Now.Date;
+
+                            // Lấy chỉ ngày của ngày khởi hành của chuyến bay
+                            DateTime flightDateOnly = flightDay.Date;
+
+                            // Tính toán độ chênh lệch giữa hai ngày
+                            TimeSpan difference = flightDateOnly - departureDay;
+
+                            // Lấy giá trị tuyệt đối của độ chênh lệch (nếu muốn)
+                            TimeSpan absoluteDifference = difference.Duration();
+
+                            if (difference.Days > 0)
+                            {
+                                var SeatType1Rule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Số lượng ghế hạng 1");
+                                int SeatType2Rule = (int)objParameter.Value;
+                                if (SeatType1Rule != null) Seat1 = (int) SeatType1Rule.Value;
+                                if (SeatType2Rule != null) Seat2 = SeatType2Rule;
+
+                                SeatBookedRule = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
+
+                                SeatEmptyRule = Seat1 + Seat2 - SeatBookedRule;
+
+                                chuyenbay.SeatEmpty = SeatEmptyRule;
+                                chuyenbay.SeatBooked = SeatBookedRule;
+                                Storage.Seat1Before = Seat1;
+                                Storage.Seat2Before = Seat2;
+                            }
+                        }
+                    }
+                }
 
                 // Cập nhật thông tin của khách hàng từ dữ liệu mới
                 existingParameter.Value = objParameter.Value;

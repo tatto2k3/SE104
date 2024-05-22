@@ -9,6 +9,7 @@ const SuaHanhLy = () => {
     const [selectedLuggageInfo, setSelectedLuggageInfo] = useState(location.state?.selectedLuggageInfo || []);
     const [flyIDs, setFlyIDs] = useState([]);
     const [airportIDs, setAirportIDs] = useState([]);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         console.log("Selected Luggage info in SuaKhachHang useEffect:", selectedLuggageInfo);
@@ -84,7 +85,8 @@ const SuaHanhLy = () => {
                 throw new Error(errorMessage);
             }
 
-            alert("Thông tin hành lý đã được cập nhật");
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (err) {
             alert("Lỗi: " + err.message);
         }
@@ -93,6 +95,11 @@ const SuaHanhLy = () => {
 
     return (
         <div className="container-fluid">
+            {showSuccessMessage && (
+                <div className="alert alert-success mt-3" role="alert">
+                    Sửa chuyến bay trung gian thành công!
+                </div>
+            )}
             <div className="logo-container">
                 <div className="logo-inner">
                     <img src={logo2} alt="Logo" className="logo-img" />
@@ -101,7 +108,7 @@ const SuaHanhLy = () => {
             </div>
 
             <div className="head-name">
-                <h2>Sửa thông tin hành lý</h2>
+                <h2>Sửa thông tin chuyến bay trung gian</h2>
             </div>
 
             <div className="infor-cn">

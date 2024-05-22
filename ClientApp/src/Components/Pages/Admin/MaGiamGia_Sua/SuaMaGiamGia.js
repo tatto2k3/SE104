@@ -10,6 +10,7 @@ import axios from 'axios';
 const SuaMaGiamGia = () => {
     const location = useLocation();
     const [selectedDiscountInfo, setSelectedDiscountInfo] = useState(location.state?.selectedDiscountInfo || []);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
         console.log("Selected discount info in SuaKhachHang useEffect:", selectedDiscountInfo);
@@ -55,6 +56,7 @@ const SuaMaGiamGia = () => {
             const updatedData = {
                 label: discountInfo.label,
                 value: discountInfo.value,
+                valueBefore: selectedDiscountInfo.value
             };
 
           
@@ -62,6 +64,8 @@ const SuaMaGiamGia = () => {
                 alert("label là bắt buộc");
                 return;
             }
+
+            console.log(updatedData);
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
             const response = await fetch('api/parameters/UpdateParameter', {
@@ -78,7 +82,8 @@ const SuaMaGiamGia = () => {
                 throw new Error(JSON.stringify(errorMessage));
             }
 
-            alert("Khuyến mãi đã được cập nhật");
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
 
         } catch (err) {
             // Xử lý lỗi
@@ -90,6 +95,11 @@ const SuaMaGiamGia = () => {
 
     return (
         <div className="container-fluid">
+            {showSuccessMessage && (
+                <div className="alert alert-success mt-3" role="alert">
+                    Sửa quy định thành công!
+                </div>
+            )}
             <div className="logo-container">
                 <div className="logo-inner">
                     <img src={logo2} alt="Logo" className="logo-img" />
@@ -98,7 +108,7 @@ const SuaMaGiamGia = () => {
             </div>
 
             <div className="head-name">
-                <h2>Sửa thông tin khuyến mãi</h2>
+                <h2>Sửa thông tin quy định</h2>
             </div>
 
             <div className="infor-cn">
@@ -136,7 +146,7 @@ const SuaMaGiamGia = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./MaGiamGia" className="text-decoration-underline-mk">Quay lại trang dành cho khuyến mãi</a>
+                <a href="./MaGiamGia" className="text-decoration-underline-mk">Quay lại trang dành cho quy định</a>
             </div>
         </div>
     );

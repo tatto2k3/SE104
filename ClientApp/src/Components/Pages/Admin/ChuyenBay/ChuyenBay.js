@@ -81,8 +81,11 @@ const ChuyenBay = () => {
     };
 
     const handleDelete = async () => {
+
+        console.log(selectedChuyenbays);
         if (selectedChuyenbays.length > 0) {
-            if (window.confirm("Are you sure to delete this chuyenbay")) {
+
+            if (window.confirm("Bạn có chắc chắn xóa chuyến bay này?")) {
                 try {
                     const response = await axios.delete('http://localhost:44430/api/chuyenbay', {
                         data: selectedChuyenbays, // Pass the array as data

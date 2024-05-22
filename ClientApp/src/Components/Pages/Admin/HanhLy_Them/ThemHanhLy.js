@@ -10,6 +10,7 @@ const ThemHanhLy = () => {
     const [note, setNote] = useState("");
     const [flyIDs, setFlyIDs] = useState([]); 
     const [airportIDs, setAirportIDs] = useState([]);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
 
     useEffect(() => {
@@ -54,7 +55,12 @@ const ThemHanhLy = () => {
                 return;
             }
 
-            alert("Luggage added successfully");
+            setShowSuccessMessage(true);
+            setFlyID("");
+            setAirportID("");
+            setTime("");
+            setNote("");
+            setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
             alert(error.message);
         }
@@ -68,6 +74,11 @@ const ThemHanhLy = () => {
 
     return (
         <div className="container-fluid">
+            {showSuccessMessage && (
+                <div className="alert alert-success mt-3" role="alert">
+                    Thêm chuyến bay trung gian thành công!
+                </div>
+            )}
             <div className="logo-container">
                 <div className="logo-inner">
                     <img src={logo2} alt="Logo" className="logo-img" />
