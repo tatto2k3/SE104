@@ -83,7 +83,7 @@ const KhachHang = () => {
         setShowConfirmation(false);
         if (selectedCustomers.length > 0) {
                 try {
-                    const response = await axios.delete('http://localhost:44430/api/customer', {
+                    const response = await axios.delete('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/customer', {
                         data: selectedCustomers, // Pass the array as data
                         headers: {
                             'Content-Type': 'application/json',

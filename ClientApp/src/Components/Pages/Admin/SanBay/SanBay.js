@@ -32,7 +32,7 @@ const SanBay = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:44430/api/sanbay/GetSanbays");
+                const response = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay/GetSanbays");
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {
@@ -59,7 +59,7 @@ const SanBay = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedSanbays.length > 0) {
-                const response = await fetch(`http://localhost:44430/api/sanbay/GetSanbayDetails?airportIds=${selectedSanbays.join(',')}`);
+                const response = await fetch(`https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay/GetSanbayDetails?airportIds=${selectedSanbays.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -75,7 +75,7 @@ const SanBay = () => {
     const handleDelete = async () => {
         if (window.confirm("Bạn có chắc chắn xóa sân bay này?")) {
             try {
-                const response = await axios.delete('http://localhost:44430/api/sanbay', {
+                const response = await axios.delete('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay', {
                     data: selectedSanbays, // Pass the array as data
                     headers: {
                         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const SanBay = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`http://localhost:44430/api/sanbay/SearchSanbays?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay/SearchSanbays?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {
@@ -119,7 +119,7 @@ const SanBay = () => {
         }
         else {
             try {
-                const response = await fetch("http://localhost:44430/api/sanbay/GetSanbays");
+                const response = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay/GetSanbays");
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {

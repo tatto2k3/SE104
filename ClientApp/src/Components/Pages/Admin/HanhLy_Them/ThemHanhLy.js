@@ -14,12 +14,12 @@ const ThemHanhLy = () => {
 
 
     useEffect(() => {
-        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
+        fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))       
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("http://localhost:44430/api/chuyenbaysanbay/GetAirportID")
+        fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/chuyenbaysanbay/GetAirportID")
             .then(response => response.json())
             .then(data => setAirportIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
@@ -41,7 +41,7 @@ const ThemHanhLy = () => {
             note: note
         };
         try {
-            const luggageResponse = await fetch("http://localhost:44430/api/chuyenbaysanbay/AddChuyenbay_Sanbays", {
+            const luggageResponse = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/chuyenbaysanbay/AddChuyenbay_Sanbays", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

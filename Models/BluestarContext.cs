@@ -27,6 +27,7 @@ public partial class BluestarContext : DbContext
     public virtual DbSet<Sanbay> Sanbays { get; set; }
 
     public virtual DbSet<Ticket> Tickets { get; set; }
+    public virtual DbSet<Food> Foods { get; set; }
 
     public DbSet<Seat> Seats { get; set; }
     public DbSet<Chuyenbay_Sanbay> Chuyenbay_Sanbays { get; set; }
@@ -97,7 +98,27 @@ public partial class BluestarContext : DbContext
 
         });
 
-        
+        modelBuilder.Entity<Food>(entity =>
+        {
+            entity.HasKey(e => e.FId).HasName("pk_food");
+
+            entity.ToTable("FOOD");
+
+            entity.Property(e => e.FId)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasColumnName("F_ID");
+            entity.Property(e => e.FName)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("F_NAME");
+            entity.Property(e => e.FPrice)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("F_PRICE");
+        });
+
+
 
         modelBuilder.Entity<Discount>(entity =>
         {

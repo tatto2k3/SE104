@@ -17,7 +17,7 @@ export default function SeatBooking() {
     console.log('Seat ID', seatId)
     useEffect(() => {
         // Fetch data from the API using Axios
-        axios.get('https://0e59-14-169-3-149.ngrok-free.app/api/seat?FlightId=F0000055')
+        axios.get('http://localhost:44430/api/seat?FlightId=F0000055')
             .then(response => {
                 // Set the fetched data to the state
                 setSeat(response.data);

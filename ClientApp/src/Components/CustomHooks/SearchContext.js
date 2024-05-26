@@ -28,6 +28,7 @@ export const SearchProvider = ({ children }) => {
         toAirport: ""
     })
     const [departFlight, setDepartFlight] = useState({});
+    const [flightTime, setFlightTime] = useState([]);
     const [ariveFlight, setArriveFlight] = useState({});
     const [total1, setTotal1] = useState(0);
     const [foodItems1, setFoodItems1] = useState([]);

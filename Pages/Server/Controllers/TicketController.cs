@@ -124,6 +124,95 @@ namespace BlueStarMVC.Pages.Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("AddTicketNew")]
+        public IActionResult AddTicketNew([FromBody] Ticket ticket)
+        {
+            if (ticket == null)
+            {
+                return BadRequest("Invalid Ticket data");
+            }
+
+            try
+            {
+                DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
+                DateTime departureDay; // Đây là ngày hiện tại
+
+                var dateBooked = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Thời gian chậm nhất khi đặt vé");
+                int extractDay = 0;
+                if (dateBooked != null)
+                {
+                    extractDay = (int)dateBooked.Value;
+                }
+
+                // Lấy ngày khởi hành của chuyến bay
+                var flightRule = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == ticket.FlyId);
+                if (flightRule != null)
+                {
+                    if (DateTime.TryParseExact(flightRule.DepartureDay, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out flightDay))
+                    {
+                        // Lấy ngày hiện tại
+                        departureDay = DateTime.Now.Date;
+
+                        // Lấy chỉ ngày của ngày khởi hành của chuyến bay
+                        DateTime flightDateOnly = flightDay.Date;
+
+                        // Tính toán độ chênh lệch giữa hai ngày
+                        TimeSpan difference = flightDateOnly - departureDay;
+
+                        // Lấy giá trị tuyệt đối của độ chênh lệch (nếu muốn)
+                        TimeSpan absoluteDifference = difference.Duration();
+
+                        if (difference.Days < extractDay) return StatusCode(500, "Không thể đặt vé do quá hạn");
+                    }
+                    else
+                    {
+                        return BadRequest("Invalid date format");
+                    }
+                }
+                else
+                {
+                    return BadRequest("Flight not found");
+                }
+
+
+
+                // Retrieve the corresponding seat type and its percentage
+                var seatType = _dbContext.Seats.FirstOrDefault(s => s.SeatID == ticket.Seat_Type_ID);
+                if (seatType == null)
+                {
+                    return BadRequest("Invalid Seat Type");
+                }
+
+                // Retrieve the flight price
+                var flight = _dbContext.Chuyenbays.FirstOrDefault(c => c.FlyId == ticket.FlyId);
+                if (flight == null)
+                {
+                    return BadRequest("Invalid Flight");
+                }
+
+                float percentage = seatType.percent / 100.0f;
+                int ticketPrice = (int)(flight.OriginalPrice * percentage);
+
+                ticket.TicketPrice = ticketPrice;
+
+
+                var fly = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == ticket.FlyId);
+                fly.SeatEmpty = fly.SeatEmpty - 1;
+
+                _dbContext.Tickets.Add(ticket);
+                _dbContext.SaveChanges();
+
+                return Ok(ticket);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+
         [HttpGet]
         [Route("GetTicketDetails")]
         public IActionResult GetTicketDetails([FromQuery] string tIds)
@@ -321,7 +410,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 }
 
                 var ticketReviewDetails = _dbContext.Tickets
-                    .Where(t => t.Name == name) // Sửa đổi dòng này để tìm kiếm theo tên
+                    .Where(t => t.Cccd == name) 
                     .Join(_dbContext.Chuyenbays,
                           ticket => ticket.FlyId,
                           chuyenbay => chuyenbay.FlyId,

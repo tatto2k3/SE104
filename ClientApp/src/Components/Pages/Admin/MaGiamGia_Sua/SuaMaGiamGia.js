@@ -68,7 +68,7 @@ const SuaMaGiamGia = () => {
             console.log(updatedData);
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('http://localhost:44430/api/parameters/UpdateParameter', {
+            const response = await fetch('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameters/UpdateParameter', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

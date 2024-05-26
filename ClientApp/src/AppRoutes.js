@@ -6,6 +6,7 @@ import Luggage from "./Components/Pages/Lugage/Lugage";
 import SeatBooking from "./Components/Pages/Seat/SeatBooking";
 import TicketPage from "./Components/Pages/Ticket/TicketPage";
 import TicketReview from "./Components/Pages/TicketReview/TicketReview";
+import TicketRV from "./Components/Pages/TicketRV/TicketRV";
 import TicketInfo from "./Components/Pages/TicketInfo/TicketInfo";
 import Login from "./Components/Pages/Login/Login";
 import CancelPage from "./Components/Pages/CancelPage/CancelPage";
@@ -88,6 +89,11 @@ const AppRoutes = [
     {
         path: '/ticket-review',
         element: TicketReview,
+        layout: LayoutTicketReview
+    },
+    {
+        path: '/ticket-rv',
+        element: TicketRV,
         layout: LayoutTicketReview
     },
     {

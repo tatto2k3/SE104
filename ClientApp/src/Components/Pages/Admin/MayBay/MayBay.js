@@ -86,7 +86,7 @@ const MayBay = () => {
     const handleDelete = async () => {
         if (window.confirm("Are you sure to delete this plane")) {
             try {
-                const response = await axios.delete('http://localhost:44430/api/plane', {
+                const response = await axios.delete('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/plane', {
                     data: selectedPlanes, // Pass the array as data
                     headers: {
                         'Content-Type': 'application/json',

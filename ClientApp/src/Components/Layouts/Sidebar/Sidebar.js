@@ -26,7 +26,14 @@ const Sidebar = ({ children }) => {
         localStorage.clear();
         navigate("/");
     }
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div>
         <meta charSet="UTF-8" />

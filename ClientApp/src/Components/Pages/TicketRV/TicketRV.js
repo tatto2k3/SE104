@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useLocation , useNavigate} from 'react-router-dom';
-import './TicketReview.css';
+import './TicketRV.css';
 import jsPDF from 'jspdf';
 import { useSearch } from '../../CustomHooks/SearchContext';
 
-const TicketReview = () => {
+const TicketRV = () => {
+
+
     const location = useLocation();
-    const [selectedCustomerInfo, setSelectedCustomerInfo] = useState(location.state?.selectedCustomerInfo || []);
+    const [ticketReviewDetails, setTicketReviewDetails] = useState(location.state?.selectedCustomerInfo || []);
     const [searchResult, setSearchResult, isLoading, setIsLoading, searchInfo,
         setSearchInfo, tripType, setTripType, airport, setAirport, departFlight, setDepartFlight, ariveFlight, setArriveFlight,
         total1, setTotal1, foodItems1, setFoodItems1, total2, setTotal2,
@@ -15,15 +17,21 @@ const TicketReview = () => {
         setPassengerInfo, seatId, setSeatId, luggaeId, setLuggageId] = useSearch();
     const navigate = useNavigate();
 
-    const departureDay = departFlight.departureDay;
-    const departureTime = departFlight.departureTime;
-    const flightTime = departFlight.flightTime;
-    const seatIdNew = localStorage.getItem('passengerInfo_seat');
-    const flyId = departFlight.flyId;
-    const name = localStorage.getItem('passengerInfo_firstName') + ' ' + localStorage.getItem('passengerInfo_lastName');
-    const cccd = localStorage.getItem('passengerInfo_passportNumber');
 
-
+    //useEffect(() => {
+    //    if (ticketReviewDetails.length > 0) {
+    //        // Nếu có thông tin khách hàng được chọn, cập nhật TicketInfo
+    //        setTicketReviewDetails({
+    //            cccd: ticketReviewDetails.cccd || '',
+    //            name: ticketReviewDetails[0]?.name || '',
+    //            flyId: ticketReviewDetails[0]?.flyId || '',
+    //            seatId: ticketReviewDetails[0]?.seat_Type_ID || '',
+    //            flightTime: ticketReviewDetails[0]?.flightTime || '',
+    //            departureDay: ticketReviewDetails[0]?.departureDay || '',
+    //            departureTime: ticketReviewDetails[0]?.departureTime || '',
+    //        });
+    //    }
+    //}, [ticketReviewDetails]);
 
 
     const handleDownload = () => {
@@ -48,7 +56,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="departureDate"
-                                            value={departureDay}
+                                            value={ticketReviewDetails.departureDay}
                                             readOnly
                                         />
                                     </div>
@@ -58,7 +66,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="departureTime"
-                                            value={departureTime}
+                                            value={ticketReviewDetails.departureTime}
                                             readOnly
                                         />
                                     </div>
@@ -68,7 +76,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="seatNumber"
-                                            value={seatIdNew}
+                                            value={ticketReviewDetails.seat_Type_ID}
                                             readOnly
                                         />
                                     </div>
@@ -80,7 +88,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="arrivalDate"
-                                            value={departureDay}
+                                            value={ticketReviewDetails.departureDay}
                                             readOnly
                                         />
                                     </div>
@@ -90,7 +98,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="arrivalTime"
-                                            value={flightTime}
+                                            value={ticketReviewDetails.flightTime}
                                             readOnly
                                         />
                                     </div>
@@ -100,7 +108,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="flightCode"
-                                            value={flyId}
+                                            value={ticketReviewDetails.flyId}
                                             readOnly
                                         />
                                     </div>
@@ -115,7 +123,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="fullName"
-                                            value={name}
+                                            value={ticketReviewDetails.name}
                                             readOnly
                                         />
                                     </div>
@@ -125,7 +133,7 @@ const TicketReview = () => {
                                             type="text"
                                             className="form-control"
                                             id="cccd"
-                                            value={cccd}
+                                            value={ticketReviewDetails.cccd}
                                             readOnly
                                         />
                                     </div>
@@ -145,4 +153,4 @@ const TicketReview = () => {
     );
 };
 
-export default TicketReview;
+export default TicketRV;

@@ -12,6 +12,13 @@ import { useSearch } from '../../CustomHooks/SearchContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function MainLayOut({ children }) {
+    const [tId, setTId] = useState("");
+    const [cccd, setCccd] = useState("");
+    const [name, setName] = useState("");
+    const [flyId, setFlyId] = useState("");
+    const [seat_Type_ID, setSeatTypeID] = useState("");
+    const [ticketPrice, setTicketPrice] = useState("");
+    const [sdt, setSdt] = useState("");
     const pages = ["Travel Details", "Seat Reservation", "Review", "Payment"];
     const navigate = useNavigate();
     const [isActive, setIsActive] = useState("Travel Details");
@@ -29,20 +36,39 @@ export default function MainLayOut({ children }) {
         return trimmedNumber;
     }
 
-    function formatTimeDuration(departureTime, arrivalTime) {
-        const departureDate = new Date(`2000-01-01T${departureTime}`);
-        const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+    function formatTimeDuration(departureTime, flightTime) {
 
-        const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
-        const hours = Math.floor(durationInMinutes / 60);
-        const minutes = durationInMinutes % 60;
+        console.log(flightTime.substring(0, 2));
+        console.log(flightTime.substring(3));
 
-        let formattedDuration = `${hours} hr`;
-        if (minutes > 0) {
-            formattedDuration += ` ${minutes} min`;
+        console.log(departureTime.substring(0, 2));
+        console.log(departureTime.substring(3));
+
+        let hour = parseInt(flightTime.substring(0, 2)) + parseInt(departureTime.substring(0, 2));
+        let minute = parseInt(flightTime.substring(3)) + parseInt(departureTime.substring(3));
+
+        if (minute >= 60) {
+            hour++;
+            minute -= 60;
         }
 
-        return formattedDuration;
+        const arriveTime = hour.toString().padStart(2, '0') + ":" + minute.toString().padStart(2, '0');
+
+
+
+        //const departureDate = new Date(`2000-01-01T${departureTime}`);
+        //const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+
+        //const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
+        //const hours = Math.floor(durationInMinutes / 60);
+        //const minutes = durationInMinutes % 60;
+
+        //let formattedDuration = `${hours} hr`;
+        //if (minutes > 0) {
+        //    formattedDuration += ` ${minutes} min`;
+        // }
+
+        return arriveTime;
     }
     useEffect(() => {
 
@@ -57,6 +83,60 @@ export default function MainLayOut({ children }) {
             setTotal2(total2)
         }
     }, [foodItems2]);
+
+    function generateRandomThreeDigits() {
+        let randomNumber = "";
+        for (let i = 0; i < 3; i++) {
+            randomNumber += Math.floor(Math.random() * 10); // Sinh số ngẫu nhiên từ 0 đến 9
+        }
+        return randomNumber;
+    }
+
+
+
+    const handleSave = async () => {
+
+
+        const tIdInt = generateRandomThreeDigits();
+
+
+
+
+        const ticketData = {
+            tId: "T" + tIdInt,
+            cccd: localStorage.getItem('passengerInfo_passportNumber'),
+            name: localStorage.getItem('passengerInfo_firstName') + ' ' + localStorage.getItem('passengerInfo_lastName'),
+            flyId: departFlight.flyId,
+            seat_Type_ID: localStorage.getItem('passengerInfo_seat'),
+            sdt: localStorage.getItem('passengerInfo_contact')
+        };
+
+        console.log(ticketData);
+        try {
+            const ticketResponse = await fetch("http://localhost:44430/api/ticket/AddTicketNew", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(ticketData),
+            });
+            if (ticketResponse.status === 500) {
+                console.log("Ticket error:", ticketResponse);
+                alert("Không thể đặt vé do quá hạn");
+                return;
+            }
+            if (ticketResponse.status === 200) {
+
+                navigate('/ticket-review', { state: { selectedTicketInfo: ticketData } });
+
+            }
+
+        } catch (error) {
+            console.log("Error:", error.message);
+            alert(error);
+        }
+    };
+
 
     return (
         <>
@@ -110,7 +190,7 @@ export default function MainLayOut({ children }) {
                                                     <div className="time-duration-wrapper">
 
                                                         <div className="time-duration">
-                                                            {formatTimeDuration(departFlight.departureTime, departFlight.arrivalTime)}
+                                                            {departFlight.flightTime}
                                                         </div>
 
                                                     </div>
@@ -123,7 +203,7 @@ export default function MainLayOut({ children }) {
                                                     </p>
                                                     <h5 className="schedule-time">
                                                         {
-                                                            departFlight.arrivalTime
+                                                           formatTimeDuration(departFlight.departureTime, departFlight.flightTime)
                                                         }
                                                     </h5>
                                                     <p className="schedule-date">
@@ -269,18 +349,7 @@ export default function MainLayOut({ children }) {
                                     }
                                 </nav>
                                 {children}
-                                <button className="btn-next" onClick={() => {
-                                    if (location.pathname === '/ticket') {
-                                        navigate('/seatreservation');
-                                    } else if (location.pathname === '/seatreservation') {
-                                        navigate('/seat');
-                                    } else if (location.pathname === '/seat') {
-                                        navigate('/luggage');
-                                    } else if (location.pathname === '/luggage') {
-                                        navigate('/payment');
-                                    }
-
-                                }}>
+                                <button className="btn-next" onClick={handleSave}>
                                     Next
                                 </button>
                             </Grid>
@@ -290,14 +359,7 @@ export default function MainLayOut({ children }) {
                                         <Paper className="fare-paper">
                                             <h6 className="fare-header">Chi tiết giá vé</h6>
                                             <ul className="item-list">
-                                                <li className="item-ticket">
-                                                    <p>
-                                                        Bánh ngọt và nước suối
-                                                    </p>
-                                                    <p>
-                                                        120000 VND
-                                                    </p>
-                                                </li>
+                                                
                                                 <li className="item-ticket">
                                                     <p>
                                                         Vé
@@ -328,23 +390,16 @@ export default function MainLayOut({ children }) {
                                                     Tổng
                                                 </div>
                                                 <div className="ticker-footer-value" >
-                                                    {total1} VND
+                                                    {departFlight.originalPrice} VND
                                                 </div>
                                             </div>
                                         </Paper>
                                     ) : (
                                         <>
                                             <Paper className="fare-paper">
-                                                <h6 className="fare-header">CHuyến đi</h6>
+                                                <h6 className="fare-header">Chuyến đi</h6>
                                                 <ul className="item-list">
-                                                    <li className="item-ticket">
-                                                        <p>
-                                                            Bánh ngọt và nước suối
-                                                        </p>
-                                                        <p>
-                                                            120000 VND
-                                                        </p>
-                                                    </li>
+                                                    
                                                     <li className="item-ticket">
                                                         <p>
                                                             Vé
@@ -375,7 +430,7 @@ export default function MainLayOut({ children }) {
                                                         Tổng
                                                     </div>
                                                     <div className="ticker-footer-value" >
-                                                        {total1} VND
+                                                            {departFlight.originalPrice} VND
                                                     </div>
                                                 </div>
                                             </Paper>
@@ -420,7 +475,7 @@ export default function MainLayOut({ children }) {
                                                         Tổng
                                                     </div>
                                                     <div className="ticker-footer-value" >
-                                                        {total2} VND
+                                                            {ariveFlight.originalPrice} VND
                                                     </div>
                                                 </div>
                                             </Paper>

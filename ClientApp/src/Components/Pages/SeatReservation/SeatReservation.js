@@ -37,7 +37,7 @@ export default function SeatReservation() {
 
     useEffect(() => {
         // Fetch data from the API using Axios
-        axios.get('https://0e59-14-169-3-149.ngrok-free.app/api/food/GetAllFood')
+        axios.get('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/food/GetAllFood')
             .then(response => {
                 // Set the fetched data to the state
                 setFoods(response.data);

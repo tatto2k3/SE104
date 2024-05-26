@@ -132,7 +132,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                                 SeatEmptyRule = Seat1 + Seat2;
 
-                                chuyenbay.SeatEmpty = SeatEmptyRule;
+                                chuyenbay.SeatEmpty = SeatEmptyRule - SeatBookedRule;
                                 chuyenbay.SeatBooked = SeatBookedRule;
                                 Storage.Seat1Before = Seat1;
                                 Storage.Seat2Before = Seat2;

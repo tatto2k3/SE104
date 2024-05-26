@@ -9,20 +9,39 @@ export default function TicketResult({ flight, handleClick }) {
 
         return trimmedNumber;
     }
-    function formatTimeDuration(departureTime, arrivalTime) {
-        const departureDate = new Date(`2000-01-01T${departureTime}`);
-        const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+    function formatTimeDuration(departureTime, flightTime) {
 
-        const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
-        const hours = Math.floor(durationInMinutes / 60);
-        const minutes = durationInMinutes % 60;
+        console.log(flightTime.substring(0, 2));
+        console.log(flightTime.substring(3));
 
-        let formattedDuration = `${hours} hr`;
-        if (minutes > 0) {
-            formattedDuration += ` ${minutes} min`;
+        console.log(departureTime.substring(0, 2));
+        console.log(departureTime.substring(3));
+
+        let hour = parseInt(flightTime.substring(0, 2)) + parseInt(departureTime.substring(0, 2));
+        let minute = parseInt(flightTime.substring(3)) + parseInt(departureTime.substring(3));
+
+        if (minute >= 60) {
+            hour++;
+            minute -= 60;
         }
 
-        return formattedDuration;
+        const arriveTime = hour.toString().padStart(2, '0') + ":" + minute.toString().padStart(2, '0');
+
+
+
+        //const departureDate = new Date(`2000-01-01T${departureTime}`);
+        //const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+
+        //const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
+        //const hours = Math.floor(durationInMinutes / 60);
+        //const minutes = durationInMinutes % 60;
+
+        //let formattedDuration = `${hours} hr`;
+        //if (minutes > 0) {
+        //    formattedDuration += ` ${minutes} min`;
+        // }
+
+        return arriveTime;
     }
 
     return (
@@ -51,7 +70,7 @@ export default function TicketResult({ flight, handleClick }) {
                         <div className="time-duration-wrapper">
 
                             <div className="time-duration">
-                                {formatTimeDuration(flight.departureTime, flight.arrivalTime)}
+                                {flight.flightTime}
                             </div>
 
                         </div>
@@ -63,7 +82,7 @@ export default function TicketResult({ flight, handleClick }) {
                             Arrive
                         </p>
                         <h5 className="schedule-time">
-                            {flight.arrivalTime}
+                            {formatTimeDuration(flight.departureTime, flight.flightTime)}
                         </h5>
                         <p className="schedule-date">
                             {flight.departureDay}

@@ -30,26 +30,26 @@ export default function HeaderReview() {
             <li><a href='/about-us'>Về chúng tôi</a></li>
         </ul>
 
-          {isLoggedIn ? (
-              <div className='navbar-avatar' onClick={toggleDropdown}>
-                  {avatar && <img src={avatar} alt="Avatar" />}
-                  {dropdownOpen && (
-                      <div className="dropdown">
-                          <ul>
-                              <li><Link to="/personal">Trang cá nhân</Link></li>
-                              <li><Link to="/search-ticket">Tra cứu lịch sử mua vé</Link></li>
-                              <li><button onClick={logout}>Đăng xuất</button></li>
-                          </ul>
-                      </div>
-                  )}
-              </div>
-          ) : (
+          {/*{isLoggedIn ? (*/}
+          {/*    <div className='navbar-avatar' onClick={toggleDropdown}>*/}
+          {/*        {avatar && <img src={avatar} alt="Avatar" />}*/}
+          {/*        {dropdownOpen && (*/}
+          {/*            <div className="dropdown">*/}
+          {/*                <ul>*/}
+          {/*                    <li><Link to="/personal">Trang cá nhân</Link></li>*/}
+          {/*                    <li><Link to="/search-ticket">Tra cứu lịch sử mua vé</Link></li>*/}
+          {/*                    <li><button onClick={logout}>Đăng xuất</button></li>*/}
+          {/*                </ul>*/}
+          {/*            </div>*/}
+          {/*        )}*/}
+          {/*    </div>*/}
+          {/*) : (*/}
               <div className='navbar-login'>
                   <a href='/sign-in'>Đăng nhập</a>
                   <div></div>
-                  <a href='/sign-up'>Đăng ký</a>
+               {/*   <a href='/sign-up'>Đăng ký</a>*/}
               </div>
-          )}
+          {/*)}*/}
 
         {/*<div className='navbar-smallscreen'>
             <GiHamburgerMenu color='#fff' fontSize={27} onClick={() =>{setToggleMenu(true)}} />

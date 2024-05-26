@@ -32,26 +32,13 @@ export default function Header() {
             <li><a href='/about-us'>Về chúng tôi</a></li>
         </ul>
 
-                {localStorage.getItem('emailNhanVien') ? (
-                    <div className='navbar-avatar' onClick={toggleDropdown}>
-                        {avatar && <img src={avatar} alt="Avatar" />}
-                        {dropdownOpen && (
-                            <div className="dropdown">
-                                <ul>
-                                    <li><Link to="/personal">Trang cá nhân</Link></li>
-                                    <li><Link to="/search-ticket">Tra cứu lịch sử mua vé</Link></li>
-                                    <li><button onClick={logout }>Đăng xuất</button></li>
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                ) : (
+                
                     <div className='navbar-login'>
                         <a href='/sign-in'>Đăng nhập</a>
                         <div></div>
-                        <a href='/sign-up'>Đăng ký</a>
+                        {/*<a href='/sign-up'>Đăng ký</a>*/}
                     </div>
-                )}
+                
         </div>
             <div className="header-body main-color">
                 <img className="header-image" src="/Images/Plane.png" />

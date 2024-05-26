@@ -40,7 +40,7 @@ export default function SearchPage() {
                 setDepartFlight(flight);
                 setActiveButton("Arrive");
                 setIsLoading(true);
-                axios.get(`https://0e59-14-169-3-149.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepatureDay=${searchInfo.ComeBackTime}`)
+                axios.get(`http://localhost:44430/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepatureDay=${searchInfo.ComeBackTime}`)
                     .then(res => {
                         setSearchResult(res.data)
                         setIsLoading(false);
@@ -67,7 +67,7 @@ export default function SearchPage() {
     function HandleReset() {
         setIsLoading(true);
         setActiveTimeLine(null);
-        axios.get(`https://0e59-14-169-3-149.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
+        axios.get(`http://localhost:44430/api/flight/SearchFlight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
                                 &DepatureDay=${searchInfo.DepartTime}`)
             .then(res => {
                 setSearchResult(res.data)
@@ -80,7 +80,7 @@ export default function SearchPage() {
         if (searchInfo.FromLocation != null && searchInfo.ToLocation != null && searchInfo.DepartTime != null && searchInfo.ComeBackTime != null) {
             if (activeButton === "Depart") {
                 setIsLoading(true);
-                axios.get(`https://0e59-14-169-3-149.ngrok-free.app/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
+                axios.get(`http://localhost:44430/api/flight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
                                 &DepatureDay=${searchInfo.DepartTime}`)
                     .then(res => {
                         setSearchResult(res.data)
@@ -91,7 +91,7 @@ export default function SearchPage() {
             }
             else {
                 setIsLoading(true);
-                axios.get(`https://0e59-14-169-3-149.ngrok-free.app/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
+                axios.get(`http://localhost:44430/api/flight?FromLocation=${searchInfo.ToLocation}&ToLocation=${searchInfo.FromLocation}&DepartureTime=${depatureTime}&ArrivalTime=${arrivalTime}
                                     &DepatureDay=${searchInfo.ComeBackTime}`)
                     .then(res => {
                         setSearchResult(res.data)

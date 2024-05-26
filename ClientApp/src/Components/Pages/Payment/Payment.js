@@ -12,20 +12,39 @@ export default function Payment() {
     const [discountPercent, setDiscountPercent] = useState(0);
     console.log(passengerInfo)
     console.log(departFlight)
-    function formatTimeDuration(departureTime, arrivalTime) {
-        const departureDate = new Date(`2000-01-01T${departureTime}`);
-        const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+    function formatTimeDuration(departureTime, flightTime) {
 
-        const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
-        const hours = Math.floor(durationInMinutes / 60);
-        const minutes = durationInMinutes % 60;
+        console.log(flightTime.substring(0, 2));
+        console.log(flightTime.substring(3));
 
-        let formattedDuration = `${hours} hr`;
-        if (minutes > 0) {
-            formattedDuration += ` ${minutes} min`;
+        console.log(departureTime.substring(0, 2));
+        console.log(departureTime.substring(3));
+
+        let hour = parseInt(flightTime.substring(0, 2)) + parseInt(departureTime.substring(0, 2));
+        let minute = parseInt(flightTime.substring(3)) + parseInt(departureTime.substring(3));
+
+        if (minute >= 60) {
+            hour++;
+            minute -= 60;
         }
 
-        return formattedDuration;
+        const arriveTime = hour.toString().padStart(2, '0') + ":" + minute.toString().padStart(2, '0');
+
+
+
+        //const departureDate = new Date(`2000-01-01T${departureTime}`);
+        //const arrivalDate = new Date(`2000-01-01T${arrivalTime}`);
+
+        //const durationInMinutes = (arrivalDate - departureDate) / (1000 * 60);
+        //const hours = Math.floor(durationInMinutes / 60);
+        //const minutes = durationInMinutes % 60;
+
+        //let formattedDuration = `${hours} hr`;
+        //if (minutes > 0) {
+        //    formattedDuration += ` ${minutes} min`;
+        // }
+
+        return arriveTime;
     }
     let amount = tripType == "oneWay" ? parseInt(total1 - (discountPercent / 100) * total1) : (total1 + total2) - (discountPercent / 100) * (total1 + total2);
     const jsonData = {
@@ -35,27 +54,27 @@ export default function Payment() {
         "customer_identify": `${passengerInfo.PassportNumber}`,
         "seat_id": `${seatId}`,
         "flight_id": `${departFlight.flyId}`,
-        "departure_day": `${departFlight.departureDay}`,
+        "departure_day": `${formatTimeDuration(departFlight.departureDay, departFlight.flightTime)}`,
         "arrive_day": `${departFlight.departureDay}`,
         "departure_time": `${departFlight.departureTime}`,
         "arrive_time": `${departFlight.arrivalTime}`,
         "customer_phone": `${passengerInfo.Contact}`,
-        "duration_time": `${formatTimeDuration(departFlight.departureTime, departFlight.arrivalTime)}`,
+        "duration_time": `${departFlight.flightTime}`,
         "trip_type": `${tripType}`
     }
 
     console.log("Data:", jsonData);
-    useEffect(() => {
-        axios.get(
-            `https://0e59-14-169-3-149.ngrok-free.app/api/discount/GetDiscountById?discountID=${passengerInfo.Discount}`
-        )
-            .then(res => {
-                setDiscountPercent(res.data.dPercent)
+    //useEffect(() => {
+    //    axios.get(
+    //        `https://0e59-14-169-3-149.ngrok-free.app/api/discount/GetDiscountById?discountID=${passengerInfo.Discount}`
+    //    )
+    //        .then(res => {
+    //            setDiscountPercent(res.data.dPercent)
 
-            })
-            .catch(error => console.log(error));
+    //        })
+    //        .catch(error => console.log(error));
 
-    }, [])
+    //}, [])
     return (
         <>
             <div className="payment-body">
@@ -88,7 +107,7 @@ export default function Payment() {
                 <div>
                     <button className="payment-zalopay"
                             onClick={() => {
-                                  axios.post("https://0e59-14-169-3-149.ngrok-free.app/api/zalo", jsonData)
+                                  axios.post("https://56ee-115-78-131-128.ngrok-free.app/api/zalo", jsonData)
                                        .then(response => {
                                            console.log('Response:', response.data);
                                            const { order_url } = response.data;

@@ -7,17 +7,17 @@ const SearchTicket = () => {
     const [searchInfo, setSearchInfo] = useState({
         tenKhachHang: '',
         ngaySinh: '',
-        maChuyenBay: ''
+        cccd: ''
     });
 
     const handleShowInfo = async () => {
         try {
-            const response = await fetch(`/api/ticket/GetTicketReviewDetails?name=${searchInfo.tenKhachHang}`);
+            const response = await fetch(`http://localhost:44430/api/ticket/GetTicketReviewDetails?name=${searchInfo.cccd}`);
             const data = await response.json();
 
             console.log("Data from API:", data);
 
-            navigate('/ticket-review', { state: { selectedCustomerInfo: data } });
+            navigate('/ticket-rv', { state: { selectedCustomerInfo: data } });
         } catch (error) {
             console.error("Error fetching ticket details:", error);
         }
@@ -33,40 +33,16 @@ const SearchTicket = () => {
 
         <div className="inforSearch">
             <form className="form-signin2">
+                       
                         <div className="mb-3 row text-xl-center">
-                            <label htmlFor="inputFullname" className="col-sm-2 col-form-label">Họ và Tên</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="text"
-                                    className="form-controlSearchTicket"
-                                    id="inputFullname"
-                                    placeholder="vd: Nguyen Van A"
-                                    value={searchInfo.tenKhachHang}
-                                    onChange={(e) => setSearchInfo({ ...searchInfo, tenKhachHang: e.target.value })}
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row text-xl-center">
-                            <label htmlFor="inputDay" className="col-sm-2 col-form-label">Ngày, tháng, năm</label>
-                            <div className="col-sm-10">
-                                <input
-                                    type="date"
-                                    className="form-controlSearchTicket"
-                                    id="inputDay"
-                                    value={searchInfo.ngayKhoiHanh}
-                                    onChange={(e) => setSearchInfo({ ...searchInfo, ngayKhoiHanh: e.target.value })}
-                                />
-                            </div>
-                        </div>
-                        <div className="mb-3 row text-xl-center">
-                            <label htmlFor="inputTicketCode" className="col-sm-2 col-form-label">CCCD</label>
+                            <label htmlFor="inputTicketCode" className="col-sm-2 col-form-label">Nhập CCCD</label>
                             <div className="col-sm-10">
                                 <input
                                     type="text"
                                     className="form-controlSearchTicket"
                                     id="inputTicketCode"
-                                    value={searchInfo.maVe}
-                                    onChange={(e) => setSearchInfo({ ...searchInfo, maVe: e.target.value })}
+                                    value={searchInfo.cccd}
+                                    onChange={(e) => setSearchInfo({ ...searchInfo, cccd: e.target.value })}
                                 />
                             </div>
                         </div>
