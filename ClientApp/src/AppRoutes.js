@@ -145,11 +145,11 @@ const AppRoutes = [
         element: Refund,
         layout: MainLayoutLogin
     },
-    {
-        path: '/KhachHang',
-        element: KhachHang,
-        layout: Sidebar
-    },
+    //{
+    //    path: '/KhachHang',
+    //    element: KhachHang,
+    //    layout: Sidebar
+    //},
     {
         path: '/ChuyenBay',
         element: ChuyenBay,
@@ -181,21 +181,21 @@ const AppRoutes = [
         layout: AdminLayout
     },
 
-    {
-        path: '/MatKhau',
-        element: MatKhau,
-        layout: AdminLayout
-    },
-    {
-        path: '/NhanVien',
-        element: NhanVien,
-        layout: AdminLayout
-    },
-    {
-        path: '/CaNhan',
-        element: CaNhan,
-        layout: AdminLayout
-    },
+    //{
+    //    path: '/MatKhau',
+    //    element: MatKhau,
+    //    layout: AdminLayout
+    //},
+    //{
+    //    path: '/NhanVien',
+    //    element: NhanVien,
+    //    layout: AdminLayout
+    //},
+    //{
+    //    path: '/CaNhan',
+    //    element: CaNhan,
+    //    layout: AdminLayout
+    //},
     {
         path: '/DoanhSo',
         element: DoanhSo,
@@ -217,32 +217,32 @@ const AppRoutes = [
         layout: AdminLayout
     },
     {
-        path: '/MaGiamGia',
+        path: '/QuyDinh',
         element: MaGiamGia,
         layout: Sidebar
     },
     {
-        path: '/MaGiamGia_Them',
+        path: '/QuyDinh_Them',
         element: MaGiamGia_Them,
         layout: AdminLayout
     },
     {
-        path: '/MaGiamGia_Sua',
+        path: '/QuyDinh_Sua',
         element: MaGiamGia_Sua,
         layout: AdminLayout
     },
     {
-        path: '/DoAn',
+        path: '/GheNgoi',
         element: DoAn,
         layout: Sidebar
     },
     {
-        path: '/DoAn_Them',
+        path: '/GheNgoi_Them',
         element: DoAn_Them,
         layout: AdminLayout
     },
     {
-        path: '/DoAn_Sua',
+        path: '/GheNgoi_Sua',
         element: DoAn_Sua,
         layout: AdminLayout
     },
@@ -252,30 +252,30 @@ const AppRoutes = [
         layout: Sidebar
     },
     {
-        path: '/HanhLy',
+        path: '/SanBayTrungGian',
         element: HanhLy,
         layout: Sidebar
     },
     {
-        path: '/HanhLy_Them',
+        path: '/SanBayTrungGian_Them',
         element: ThemHanhLy,
         layout: AdminLayout
     },
     {
-        path: '/HanhLy_Sua',
+        path: '/SanBayTrungGian_Sua',
         element: SuaHanhLy,
         layout: AdminLayout
     },
-    {
-        path: '/KhachHang_Them',
-        element: ThemKhachHang,
-        layout: AdminLayout
-    },
-    {
-        path: '/KhachHang_Sua',
-        element: SuaKhachHang,
-        layout: AdminLayout
-    },
+    //{
+    //    path: '/KhachHang_Them',
+    //    element: ThemKhachHang,
+    //    layout: AdminLayout
+    //},
+    //{
+    //    path: '/KhachHang_Sua',
+    //    element: SuaKhachHang,
+    //    layout: AdminLayout
+    //},
     {
         path: '/ChuyenBay_Them',
         element: ThemChuyenBay,
@@ -286,16 +286,16 @@ const AppRoutes = [
         element: SuaChuyenBay,
         layout: AdminLayout
     },
-    {
-        path: '/MayBay_Them',
-        element: ThemMayBay,
-        layout: AdminLayout
-    },
-    {
-        path: '/MayBay_Sua',
-        element: SuaMayBay,
-        layout: AdminLayout
-    },
+    //{
+    //    path: '/MayBay_Them',
+    //    element: ThemMayBay,
+    //    layout: AdminLayout
+    //},
+    //{
+    //    path: '/MayBay_Sua',
+    //    element: SuaMayBay,
+    //    layout: AdminLayout
+    //},
     {
         path: '/seatreservation',
         element: SeatReservation,

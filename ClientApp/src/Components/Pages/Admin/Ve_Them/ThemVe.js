@@ -16,12 +16,12 @@ const ThemVe = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
-        fetch("/api/chuyenbaysanbay/GetFlyID")
+        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("/api/ticket/GetSeatID")
+        fetch("http://localhost:44430/api/ticket/GetSeatID")
             .then(response => response.json())
             .then(data => setSeatIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
@@ -45,7 +45,7 @@ const ThemVe = () => {
             sdt: sdt,
         };
         try {
-        const ticketResponse = await fetch("api/ticket/AddTicket", {
+            const ticketResponse = await fetch("http://localhost:44430/api/ticket/AddTicket", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -77,7 +77,14 @@ const ThemVe = () => {
             tId.trim() !== ""
         );
     };
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (
@@ -113,7 +120,7 @@ const ThemVe = () => {
                         <div className="col-4">
                             <label htmlFor="cccd" className="form-label">CCCD</label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 id="cccd"
                                 placeholder="CCCD"
@@ -167,7 +174,7 @@ const ThemVe = () => {
                         <div className="col-4">
                             <label htmlFor="seatId" className="form-label">Số điện thoại</label>
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 id="sdt"
                                 placeholder="Số điện thoại"

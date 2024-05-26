@@ -21,7 +21,7 @@ const ThemSanBay = () => {
             place: place,
         };
         try {
-            const sanbayResponse = await fetch("api/sanbay/AddSanbay", {
+            const sanbayResponse = await fetch("http://localhost:44430/api/sanbay/AddSanbay", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,6 +50,14 @@ const ThemSanBay = () => {
             airportId.trim() !== ""
         );
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (

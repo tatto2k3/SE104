@@ -20,7 +20,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
         [Route("GetTickets")]
         public IActionResult GetTickets()
         {
-            List<Ticket> list = _dbContext.Tickets.ToList();
+            List<Ticket> list = _dbContext.Tickets.OrderByDescending(cb => cb.FlyId).ToList();
             return StatusCode(StatusCodes.Status200OK, list);
         }
         [HttpGet]
@@ -109,6 +109,10 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                 ticket.TicketPrice = ticketPrice;
 
+
+                var fly = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == ticket.FlyId);
+                fly.SeatEmpty = fly.SeatEmpty - 1;
+
                 _dbContext.Tickets.Add(ticket);
                 _dbContext.SaveChanges();
 
@@ -126,6 +130,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
         {
             try
             {
+                
                 if (string.IsNullOrEmpty(tIds))
                 {
                     return BadRequest("Invalid Ticket IDs");
@@ -162,6 +167,39 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 if (existingTicket == null)
                 {
                     return NotFound("Ticket not found");
+                }
+
+                DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
+                DateTime departureDay; // Đây là ngày hiện tại
+
+                // Lấy ngày khởi hành của chuyến bay
+                var flightRule = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == objTicket.FlyId);
+                if (flightRule != null)
+                {
+                    if (DateTime.TryParseExact(flightRule.DepartureDay, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out flightDay))
+                    {
+                        // Lấy ngày hiện tại
+                        departureDay = DateTime.Now.Date;
+
+                        // Lấy chỉ ngày của ngày khởi hành của chuyến bay
+                        DateTime flightDateOnly = flightDay.Date;
+
+                        // Tính toán độ chênh lệch giữa hai ngày
+                        TimeSpan difference = flightDateOnly - departureDay;
+
+                        // Lấy giá trị tuyệt đối của độ chênh lệch (nếu muốn)
+                        TimeSpan absoluteDifference = difference.Duration();
+
+                        if (difference.Days < 0) return StatusCode(500, "Không thể sửa vé do quá hạn");
+                    }
+                    else
+                    {
+                        return StatusCode(500, "Không thể sửa vé do quá hạn");
+                    }
+                }
+                else
+                {
+                    return StatusCode(500, "Không thể sửa vé do quá hạn");
                 }
 
                 // Cập nhật thông tin của khách hàng từ dữ liệu mới

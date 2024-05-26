@@ -23,7 +23,7 @@ const Sidebar = ({ children }) => {
     }, []);
 
     const handleExit = () => {
-        localStorage.removeItem('isLoggedIn');
+        localStorage.clear();
         navigate("/");
     }
 
@@ -76,30 +76,30 @@ const Sidebar = ({ children }) => {
                 <span className="menu-collapsed">Sân bay</span>
               </div>
             </a>
-            <a href="/HanhLy" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
+            <a href="/SanBayTrungGian" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
               <div className="d-flex w-100 justify-content-start align-items-center">
                                 <i className="bi bi-geo-alt" />
                 <span id="collapse-text" className="menu-collapsed">Sân bay trung gian</span>
               </div>
             </a>
-            <a href="/DoAn" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
+            <a href="/GheNgoi" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
               <div className="d-flex w-100 justify-content-start align-items-center">
-                <i className="bi bi-cup-hot" />
+                                <i class="bi bi-person-wheelchair"></i>
                 <span id="collapse-text" className="menu-collapsed">Ghế ngồi</span>
               </div>
             </a>
-            <a href="/MaGiamGia" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
+            <a href="/QuyDinh" data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
               <div className="d-flex w-100 justify-content-start align-items-center">
-                <i className="bi bi-gift" />
-                                <span id="collapse-text" className="menu-collapsed">Quy định<span className="badge badge-pill badge-dark ml-2">{discountCount}</span> </span>
+                                <i class="bi bi-clipboard-x"></i>
+                                <span id="collapse-text" className="menu-collapsed">Quy định</span>
               </div>
             </a>
             {/* Logo */}
                         <br />
                         <a onClick={handleExit} data-toggle="sidebar-colapse" className="bg-transparent list-group-item list-group-item-action d-flex align-items-center">
               <div className="d-flex w-100 justify-content-start align-items-center">
-                <i className="bi bi-box-arrow-right" />
-                <span id="collapse-text" className="menu-collapsed">Thoát </span>
+                                <i className="bi bi-box-arrow-right" />
+                                <span id="collapse-text" className="menu-collapsed" onClick={handleExit }>Thoát </span>
               </div>
             </a>   
           </ul>{/* List Group END*/}

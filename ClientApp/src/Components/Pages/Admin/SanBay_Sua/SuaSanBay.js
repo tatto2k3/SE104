@@ -66,7 +66,7 @@ const SuaSanBay = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('api/sanbay/UpdateSanbay', {
+            const response = await fetch('http://localhost:44430/api/sanbay/UpdateSanbay', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,6 +88,14 @@ const SuaSanBay = () => {
             alert(err.message);
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (

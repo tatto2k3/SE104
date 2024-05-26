@@ -14,19 +14,19 @@ const ThemHanhLy = () => {
 
 
     useEffect(() => {
-        fetch("/api/chuyenbaysanbay/GetFlyID")
+        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))       
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("/api/chuyenbaysanbay/GetAirportID")
+        fetch("http://localhost:44430/api/chuyenbaysanbay/GetAirportID")
             .then(response => response.json())
             .then(data => setAirportIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
 
            
     }, []);
-
+    console.log(flyIDs);
 
     const handleSave = async () => {
         if (!isValidData()) {
@@ -41,7 +41,7 @@ const ThemHanhLy = () => {
             note: note
         };
         try {
-            const luggageResponse = await fetch("api/chuyenbaysanbay/AddChuyenbay_Sanbays", {
+            const luggageResponse = await fetch("http://localhost:44430/api/chuyenbaysanbay/AddChuyenbay_Sanbays", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const ThemHanhLy = () => {
             setNote("");
             setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (error) {
-            alert(error.message);
+            alert("Lỗi thời gian dừng hoặc sân bay.");
         }
     };
 
@@ -71,7 +71,14 @@ const ThemHanhLy = () => {
             flyID.trim() !== ""
         );
     };
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (
@@ -158,7 +165,7 @@ const ThemHanhLy = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./HanhLy" className="text-decoration-underline-mk">Quay lại trang dành cho sân bay trung gian</a>
+                <a href="./SanBayTrungGian" className="text-decoration-underline-mk">Quay lại trang dành cho sân bay trung gian</a>
             </div>
         </div>
     );

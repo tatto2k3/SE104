@@ -136,7 +136,14 @@ const KhachHang = () => {
         }
     };
 
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
             <div className=" mt-md-6">

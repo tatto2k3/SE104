@@ -20,7 +20,7 @@ const ThemDoAn = () => {
 
         };
         try {
-        const FoodResponse = await fetch("api/seat/AddSeats", {
+            const FoodResponse = await fetch("http://localhost:44430/api/seat/AddSeats", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -45,7 +45,14 @@ const ThemDoAn = () => {
             seatID.trim() !== ""
         );
     };
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             <div className="logo-container">
@@ -56,7 +63,7 @@ const ThemDoAn = () => {
             </div>
 
             <div className="head-name">
-                <h2>Thêm thông tin thức ăn</h2>
+                <h2>Thêm thông tin loại ghế</h2>
             </div>
 
             <div className="infor-cn">
@@ -92,7 +99,7 @@ const ThemDoAn = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./DoAn" className="text-decoration-underline-mk">Quay lại trang dành cho ghế ngồi</a>
+                <a href="./GheNgoi" className="text-decoration-underline-mk">Quay lại trang dành cho ghế ngồi</a>
             </div>
         </div>
     );

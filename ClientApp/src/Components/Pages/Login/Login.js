@@ -40,6 +40,11 @@ const Login = () => {
             // Set avatar in the context
             setAvatar(responseData.avatar);
             console.log("Email login:", localStorage.getItem('email'));
+            console.log(responseData);
+
+            if (responseData.redirectUrl === '/ChuyenBay') {
+                localStorage.setItem('emailNhanVien', account.email);
+            }
             
 
             console.log('Login success!');

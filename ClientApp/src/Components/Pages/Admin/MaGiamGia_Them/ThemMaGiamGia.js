@@ -71,7 +71,7 @@ const ThemMaGiamGia = () => {
             </div>
 
             <div className="head-name">
-                <h2>Thêm khuyến mãi</h2>
+                <h2>Thêm quy định</h2>
             </div>
 
             <div className="infor-cn">

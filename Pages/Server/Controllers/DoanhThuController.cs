@@ -47,7 +47,6 @@ namespace BlueStarMVC.Pages.Server.Controllers
         {
             try
             {
-                // Ensure the year is not null or empty
                 if (string.IsNullOrEmpty(year))
                 {
                     return BadRequest("Year parameter is required.");
@@ -63,39 +62,29 @@ namespace BlueStarMVC.Pages.Server.Controllers
                                  ticket.TicketPrice
                              };
 
-                // Calculate total revenue for the year
-                decimal totalRevenue = result.Sum(item => (decimal) item.TicketPrice);
+                decimal totalRevenue = result.Sum(item => item.TicketPrice);
 
-                var details = _dbContext.Tickets
-            .Join(
-                _dbContext.Chuyenbays,
-                ticket => ticket.FlyId,
-                flight => flight.FlyId,
-                (ticket, flight) => new
-                {
-                    TId = ticket.TId,
-                    Cccd = ticket.Cccd,
-                    Name = ticket.Name,
-                    FlyId = flight.FlyId,
-                    DepartureDay = flight.DepartureDay,
-                    Price = ticket.TicketPrice
-                }
-            )
-            .Where(item => item.DepartureDay.Substring(0, 4) == year)
-            .ToList();
 
-                // You can return the result along with the total revenue
+                var details = result
+                    .GroupBy(item => item.DepartureDay.Substring(5, 2)) 
+                    .Select(group => new
+                    {
+                        Month = group.Key,
+                        NumberOfFlights = group.Select(g => g.FlyId).Distinct().Count(),
+                        MonthlyRevenue = group.Sum(item => item.TicketPrice),
+                        PercentageOfYearlyRevenue = (group.Sum(item => item.TicketPrice) / totalRevenue) * 100 
+                    })
+                    .OrderBy(g => g.Month)
+                    .ToList();
+
                 return Ok(new { TotalRevenue = totalRevenue, Details = details });
-
-                // You can return the result along with the total revenue
-                return Ok(totalRevenue);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as needed
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
 
         [HttpGet]
         [Route("GetDoanhThuThang")]
@@ -103,11 +92,12 @@ namespace BlueStarMVC.Pages.Server.Controllers
         {
             try
             {
-                // Ensure the year is not null or empty
+
                 if (string.IsNullOrEmpty(year) || string.IsNullOrEmpty(month))
                 {
-                    return BadRequest("Year parameter is required.");
+                    return BadRequest("Year and month parameters are required.");
                 }
+
 
                 var result = from ticket in _dbContext.Tickets
                              join chuyenBay in _dbContext.Chuyenbays on ticket.FlyId equals chuyenBay.FlyId
@@ -119,43 +109,46 @@ namespace BlueStarMVC.Pages.Server.Controllers
                                  ticket.TicketPrice
                              };
 
-                decimal totalRevenue = (decimal) result.Sum(item => item.TicketPrice);
+ 
+                decimal totalRevenue = result.Sum(item => item.TicketPrice);
                 int sovetrongthang = result.Count();
 
-                var details = _dbContext.Tickets
-            .Join(
-                _dbContext.Chuyenbays,
-                ticket => ticket.FlyId,
-                flight => flight.FlyId,
-                (ticket, flight) => new
-                {
-                    TId = ticket.TId,
-                    Cccd = ticket.Cccd,
-                    Name = ticket.Name,
-                    FlyId = flight.FlyId,
-                    DepartureDay = flight.DepartureDay,
-                    Price = ticket.TicketPrice
-                }
-            )
-            .Where(item => item.DepartureDay.Substring(0, 4) == year && item.DepartureDay.Substring(5, 2) == month)
-            .ToList();
 
-                // You can return the result along with the total revenue
-                return Ok(new { TotalRevenue = totalRevenue, Details = details , Sovetrongthang = sovetrongthang});
+                var allFlight = _dbContext.Chuyenbays.Where(chuyenBay => chuyenBay.DepartureDay.Substring(0, 4) == year && chuyenBay.DepartureDay.Substring(5, 2) == month)
+                    .Select(chuyenbay => chuyenbay.FlyId).ToList();
+
+
+
+
+
+
+                var details = result
+                    .GroupBy(item => new { item.FlyId, item.DepartureDay })
+                    .Select(group => new
+                    {
+                        FlyId = group.Key.FlyId,
+                        DepartureDay = group.Key.DepartureDay,
+                        sovemoichuyenbay = group.Count(),
+                        DoanhThu = group.Sum(item => item.TicketPrice),
+                        TyLe = (group.Sum(item => item.TicketPrice) / totalRevenue) * 100 
+                    })
+                    .ToList();
+
+      
+                return Ok(new { TotalRevenue = totalRevenue, Details = details, Sovetrongthang = sovetrongthang });
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as needed
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
 
         [HttpGet("GetDetails")]
         public IActionResult GetDetails()
         {
             try
             {
-                // Assuming you have models for Ticket and Flight in your DbContext
                 var details = _dbContext.Tickets
                     .Join(
                         _dbContext.Chuyenbays,

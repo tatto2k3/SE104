@@ -32,7 +32,7 @@ export default function Header() {
             <li><a href='/about-us'>Về chúng tôi</a></li>
         </ul>
 
-                {isLoggedIn ? (
+                {localStorage.getItem('emailNhanVien') ? (
                     <div className='navbar-avatar' onClick={toggleDropdown}>
                         {avatar && <img src={avatar} alt="Avatar" />}
                         {dropdownOpen && (

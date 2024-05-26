@@ -33,8 +33,10 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
             foreach (var chuyenbay in list)
             {
-                
-              
+
+
+                int countTicket = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
+
 
                 var trunggianList = _dbContext.Chuyenbay_Sanbays
                     .Where(cs => cs.FlyId == chuyenbay.FlyId)
@@ -52,7 +54,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     DepartureTime = chuyenbay.DepartureTime,
                     DepartureDay = chuyenbay.DepartureDay,
                     FlightTime = chuyenbay.FlightTime,
-                    SeatBooked = chuyenbay.SeatBooked,
+                    SeatBooked = countTicket,
                     SeatEmpty = chuyenbay.SeatEmpty,
                     TrungGian = trunggianList 
                 };
@@ -241,7 +243,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                 // Search customers by name containing the provided keyword
                 var searchResults = _dbContext.Chuyenbays
-                .Where(c => c.FlyId.Contains(searchKeyword) || c.DepartureDay.Contains(searchKeyword)  || c.FromLocation.Contains(searchKeyword) || c.ToLocation.Contains(searchKeyword)  || c.OriginalPrice.ToString().Contains(searchKeyword))
+                .Where(c => c.FlyId.Contains(searchKeyword) || c.DepartureDay.Contains(searchKeyword)  || c.FromLocation.Contains(searchKeyword) || c.ToLocation.Contains(searchKeyword) )
                 .ToList();
 
                 return Ok(searchResults);

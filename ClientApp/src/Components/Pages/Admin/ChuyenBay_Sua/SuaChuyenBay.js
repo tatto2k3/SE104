@@ -95,7 +95,7 @@ const SuaChuyenBay = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('api/chuyenbay/UpdateChuyenbay', {
+            const response = await fetch('http://localhost:44430/api/chuyenbay/UpdateChuyenbay', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,6 +117,14 @@ const SuaChuyenBay = () => {
             alert(err.message);
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container-fluid">

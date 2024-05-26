@@ -57,6 +57,15 @@ const ThemKhachHang = () => {
         );
     };
 
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="container-fluid">
             {showSuccessMessage && (

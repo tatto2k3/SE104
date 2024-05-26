@@ -86,6 +86,18 @@ const ChuyenBay = () => {
         if (selectedChuyenbays.length > 0) {
 
             if (window.confirm("Bạn có chắc chắn xóa chuyến bay này?")) {
+
+
+                const today = new Date();
+                const pastDateFlights = chuyenbays.filter(chuyenbay =>
+                    selectedChuyenbays.includes(chuyenbay.flyId) && new Date(chuyenbay.departureDay) < today
+                );
+
+                
+                if (pastDateFlights.length > 0) {
+                    alert("Không thể xóa chuyến bay do quá hạn");
+                    return;
+                }
                 try {
                     const response = await axios.delete('http://localhost:44430/api/chuyenbay', {
                         data: selectedChuyenbays, // Pass the array as data
@@ -140,6 +152,14 @@ const ChuyenBay = () => {
             }
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
         <div className="mt-md-6">
@@ -162,9 +182,15 @@ const ChuyenBay = () => {
             <div className="d-flex w-100 justify-content-start align-items-center">
               <i className="bi bi-search" />
               <span className="first">
-                <input className="form-control" placeholder="Tìm kiếm ..." />
+                            <input
+                                className="form-control"
+                                placeholder="Tìm kiếm ..."
+                                value={searchKeyword}
+                                onChange={(e) => setSearchKeyword(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                            />
               </span>
-              <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
+             
             </div>
           </div>
                 <table className="table table-bordered">

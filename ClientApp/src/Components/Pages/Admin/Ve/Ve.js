@@ -10,7 +10,7 @@ const Ve = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [selectedTickets, setSelectedTickets] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(8);
+    const [itemsPerPage] = useState(16);
     const navigate = useNavigate();
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -24,7 +24,7 @@ const Ve = () => {
     };
 
     useEffect(() => {
-        fetch("api/ticket/GetTickets")
+        fetch("http://localhost:44430/api/ticket/GetTickets")
             .then(response => response.json())
             .then(responseJson => {
                 console.log(responseJson);
@@ -42,7 +42,7 @@ const Ve = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/ticket/GetTickets");
+                const response = await fetch("http://localhost:44430/api/ticket/GetTickets");
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {
@@ -69,7 +69,9 @@ const Ve = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedTickets.length > 0) {
-                const response = await fetch(`/api/ticket/GetTicketDetails?tIds=${selectedTickets.join(',')}`);
+
+               
+                const response = await fetch(`http://localhost:44430/api/ticket/GetTicketDetails?tIds=${selectedTickets.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -79,6 +81,7 @@ const Ve = () => {
             }
         } catch (error) {
             console.error("Error fetching Ticket details:", error);
+            alert("Không thể sửa vé do quá hạn");
         }
     };
 
@@ -121,7 +124,7 @@ const Ve = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`/api/ticket/SearchTickets?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`http://localhost:44430/api/ticket/SearchTickets?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {
@@ -130,7 +133,7 @@ const Ve = () => {
         }
         else {
             try {
-                const response = await fetch("/api/ticket/GetTickets");
+                const response = await fetch("http://localhost:44430/api/ticket/GetTickets");
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {
@@ -138,6 +141,14 @@ const Ve = () => {
             }
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
         <div className="mt-md-6">
@@ -168,7 +179,7 @@ const Ve = () => {
                                 onKeyPress={handleKeyPress}
                             />
               </span>
-              <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
+            
             </div>
           </div>
           <table className="table table-bordered">

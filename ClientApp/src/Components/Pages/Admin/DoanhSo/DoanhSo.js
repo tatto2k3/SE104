@@ -49,7 +49,7 @@ const DoanhSo = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/doanhthu/GetDoanhSo?year=2024");
+                const response = await fetch("http://localhost:44430/api/doanhthu/GetDoanhSo?year=2024");
                 const data = await response.json();
                 console.log(data);
                 setDetails(data);
@@ -65,7 +65,7 @@ const DoanhSo = () => {
 
     const fetchDoanhSoData = async () => {
         try {
-            const response = await fetch(`/api/doanhthu/GetDoanhSo?year=${year}`);
+            const response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhSo?year=${year}`);
             const data = await response.json();
             setChartData(data);
         } catch (error) {
@@ -85,12 +85,12 @@ const DoanhSo = () => {
 
             if (reportType === "nam") {
                 console.log("hihi");
-                response = await fetch(`/api/doanhthu/GetDoanhThuNam?year=${searchData.year}`);
+                response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhThuNam?year=${searchData.year}`);
                 console.log(response);
                 console.log("hoho");
 
             } else {
-                response = await fetch(`/api/doanhthu/GetDoanhThuThang?year=${searchData.year}&month=${searchData.month}`);
+                response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhThuThang?year=${searchData.year}&month=${searchData.month}`);
             }
 
             if (!response.ok) {
@@ -98,6 +98,7 @@ const DoanhSo = () => {
             }
 
             const data = await response.json();
+            console.log(data);
             console.log("Before setDoanhThu:", doanhthu);
             console.log("data: ", data);
             setDoanhThu(data.totalRevenue);
@@ -193,30 +194,49 @@ const DoanhSo = () => {
       ),
       chiTiet: (
           <div>
-      <table className="table table-bordered">
-        <thead>
-                    <tr>
-                      <th>Mã vé</th>
-                      <th>CCCD</th>
-                      <th>Họ và tên</th>
-                      <th>Mã chuyến bay</th>
-                      <th>Ngày bay</th>
-                      <th>Giá vé</th>
-                    </tr>
+              <table className="table table-bordered">
+                  <thead>
+                      <tr>
+                          {reportType === "thang" ? (
+                              <>
+                                  <th>Chuyến bay</th>
+                                  <th>Số vé</th>
+                                  <th>Doanh thu</th>
+                                  <th>Tỷ lệ (%)</th>
+                              </>
+                          ) : (
+                              <>
+                                  <th>Tháng</th>
+                                  <th>Số chuyến bay</th>
+                                  <th>Doanh thu</th>
+                                  <th>Tỷ lệ (%)</th>
+                              </>
+                          )}
+                      </tr>
                   </thead>
                   <tbody>
-                {currentItems.map((item) => (
-                    <tr key={item.tId}>
-                        <td>{item.tId}</td>
-                        <td>{item.cccd}</td>
-                        <td>{item.name}</td>
-                        <td>{item.flyId}</td>
-                        <td>{item.departureDay}</td>
-                        <td>{item.price}</td>
-                    </tr>
-                ))}
+                      {currentItems.map((item, index) => (
+                          <tr key={reportType === "thang" ? item.tId : index}>
+                              {reportType === "thang" ? (
+                                  <>
+                                      <td>{item.flyId}</td>
+                                      <td>{item.sovemoichuyenbay}</td>
+                                      <td>{item.doanhThu}</td>
+                                      <td>{item.tyLe ? item.tyLe.toFixed(2) : 'N/A'}</td>
+                                  </>
+                              ) : (
+                                  <>
+                                      <td>{item.month}</td>
+                                      <td>{item.numberOfFlights}</td>
+                                          <td>{item.monthlyRevenue}</td>
+                                          <td>{item.percentageOfYearlyRevenue ? item.percentageOfYearlyRevenue.toFixed(2) : 'N/A'}</td>
+
+                                  </>
+                              )}
+                          </tr>
+                      ))}
                   </tbody>
-        </table>
+              </table>
 
         <ul className="pagination justify-content-center">
             <li className="page-item ">
@@ -233,7 +253,15 @@ const DoanhSo = () => {
               </ul>
           </div>
     ),
-  };
+    };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+               </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
         <div className=" mt-md-6">

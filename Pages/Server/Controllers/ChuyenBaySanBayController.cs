@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BlueStarMVC.Pages.Server.Controllers
 {
@@ -21,7 +22,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
         {
             try
             {
-                var chuyenbay_sanbays = _dbContext.Chuyenbay_Sanbays.ToList();
+                var chuyenbay_sanbays = _dbContext.Chuyenbay_Sanbays.OrderByDescending(cs => cs.FlyId).ToList();
                 return Ok(chuyenbay_sanbays);
             }
             catch (Exception ex)
@@ -29,14 +30,22 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
         [HttpGet]
         [Route("GetFlyID")]
         public IActionResult GetFlyID()
         {
             try
             {
-                var flyIDs = _dbContext.Chuyenbays.Select(cs => cs.FlyId).Distinct().ToList();
+                var currentDate = DateTime.Now.Date;
+                var dateFormat = "yyyy-MM-dd";
+
+                var flyIDs = _dbContext.Chuyenbays
+                    .AsEnumerable()
+                    .Where(cb => DateTime.TryParseExact(cb.DepartureDay, dateFormat, null, System.Globalization.DateTimeStyles.None, out var departureDate) && departureDate.Date > currentDate)
+                    .Select(cb => cb.FlyId)
+                    .Distinct()
+                    .ToList();
+
                 return Ok(flyIDs);
             }
             catch (Exception ex)
@@ -44,6 +53,8 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
 
         [HttpGet]
         [Route("GetAirportID")]
@@ -154,14 +165,6 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 }
 
 
-                int count = _dbContext.Chuyenbay_Sanbays.Count(p => p.FlyId == objChuyenbay_Sanbay.FlyId);
-                var numAirportRule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Số sân bay trung gian tối đa");
-
-                if (numAirportRule != null)
-                {
-                    int numRule = (int)numAirportRule.Value;
-                    if (count >= numRule) return StatusCode(500, "Số lượng sân bay trung gian đã đạt mức tối đa.");
-                }
 
                 var timeMinRule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Thời gian dừng tối thiểu");
                 var timeMaxRule = _dbContext.Parameters.FirstOrDefault(p => p.Label == "Thời gian dừng tối đa");
@@ -176,6 +179,39 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 {
                     int timeRule = (int)timeMaxRule.Value;
                     if (objChuyenbay_Sanbay.Time > timeRule) return StatusCode(500, "Thời gian dừng lớn hơn mức cho phép");
+                }
+
+                DateTime flightDay;
+                DateTime departureDay;
+
+                // Lấy ngày khởi hành của chuyến bay
+                var flightRule = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == objChuyenbay_Sanbay.FlyId);
+                if (flightRule != null)
+                {
+                    if (DateTime.TryParseExact(flightRule.DepartureDay, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out flightDay))
+                    {
+                        // Lấy ngày hiện tại
+                        departureDay = DateTime.Now.Date;
+
+                        // Lấy chỉ ngày của ngày khởi hành của chuyến bay
+                        DateTime flightDateOnly = flightDay.Date;
+
+                        // Tính toán độ chênh lệch giữa hai ngày
+                        TimeSpan difference = flightDateOnly - departureDay;
+
+                        // Lấy giá trị tuyệt đối của độ chênh lệch (nếu muốn)
+                        TimeSpan absoluteDifference = difference.Duration();
+
+                        if (difference.Days < 0) return StatusCode(500, "Không thể sửa do quá hạn");
+                    }
+                    else
+                    {
+                        return StatusCode(500, "Không thể sửa do quá hạn");
+                    }
+                }
+                else
+                {
+                    return StatusCode(500, "Không thể sửa vé do quá hạn");
                 }
 
                 existingLuggage.Time = objChuyenbay_Sanbay.Time;

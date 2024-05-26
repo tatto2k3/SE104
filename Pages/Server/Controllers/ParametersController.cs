@@ -130,7 +130,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                                 SeatBookedRule = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
 
-                                SeatEmptyRule = Seat1 + Seat2 - SeatBookedRule;
+                                SeatEmptyRule = Seat1 + Seat2;
 
                                 chuyenbay.SeatEmpty = SeatEmptyRule;
                                 chuyenbay.SeatBooked = SeatBookedRule;

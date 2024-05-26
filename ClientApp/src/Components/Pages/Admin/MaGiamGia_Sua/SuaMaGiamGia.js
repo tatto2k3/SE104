@@ -68,7 +68,7 @@ const SuaMaGiamGia = () => {
             console.log(updatedData);
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('api/parameters/UpdateParameter', {
+            const response = await fetch('http://localhost:44430/api/parameters/UpdateParameter', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +91,14 @@ const SuaMaGiamGia = () => {
         }
     };
 
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container-fluid">
@@ -146,7 +153,7 @@ const SuaMaGiamGia = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./MaGiamGia" className="text-decoration-underline-mk">Quay lại trang dành cho quy định</a>
+                <a href="./QuyDinh" className="text-decoration-underline-mk">Quay lại trang dành cho quy định</a>
             </div>
         </div>
     );

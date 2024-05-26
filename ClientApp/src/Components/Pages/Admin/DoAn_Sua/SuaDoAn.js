@@ -62,7 +62,7 @@ const SuaDoAn = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('api/seat/UpdateSanbay', {
+            const response = await fetch('http://localhost:44430/api/seat/UpdateSanbay', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,7 +83,14 @@ const SuaDoAn = () => {
             alert(err.message);
         }
     };
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             <div className="logo-container">
@@ -94,7 +101,7 @@ const SuaDoAn = () => {
             </div>
 
             <div className="head-name">
-                <h2>Sửa thông tin thức ăn</h2>
+                <h2>Sửa thông tin loại ghế</h2>
             </div>
 
             <div className="infor-cn">
@@ -131,7 +138,7 @@ const SuaDoAn = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./DoAn" className="text-decoration-underline-mk">Quay lại trang dành cho thức ăn</a>
+                <a href="./GheNgoi" className="text-decoration-underline-mk">Quay lại trang dành cho loại ghế</a>
             </div>
         </div>
     );

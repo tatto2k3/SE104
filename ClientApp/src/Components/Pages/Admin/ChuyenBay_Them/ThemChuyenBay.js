@@ -51,7 +51,7 @@ const ThemChuyenBay = () => {
         }
 
         try {
-            const flightResponse = await fetch("api/chuyenbay/AddChuyenbay", {
+            const flightResponse = await fetch("http://localhost:44430/api/chuyenbay/AddChuyenbay", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,6 +85,15 @@ const ThemChuyenBay = () => {
         );
     };
     const today = new Date().toISOString().split('T')[0];
+
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="container-fluid">

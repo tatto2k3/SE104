@@ -27,11 +27,11 @@ const HanhLy = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     const handleClick = () => {
-        navigate('/HanhLy_Them');
+        navigate('/SanBayTrungGian_Them');
     };
 
     useEffect(() => {
-        fetch("api/chuyenbaysanbay/GetChuyenbay_Sanbays")
+        fetch("http://localhost:44430/api/chuyenbaysanbay/GetChuyenbay_Sanbays")
             .then(response => response.json())
             .then(responseJson => {
                 console.log(responseJson);
@@ -77,11 +77,11 @@ const HanhLy = () => {
 
             const { FlyId, AirportId } = selectedLuggage; // Giả sử FlyId và AirportId là các thuộc tính cần thiết
 
-            const response = await axiosInstance.get(`chuyenbaysanbay/GetLuggageDetails?FlyId=${selectedLuggage.flyId}&AirportId=${selectedLuggage.airportId}`);
+            const response = await axiosInstance.get(`http://localhost:44430/api/chuyenbaysanbay/GetLuggageDetails?FlyId=${selectedLuggage.flyId}&AirportId=${selectedLuggage.airportId}`);
 
             const data = response.data;
 
-            navigate('/HanhLy_Sua', { state: { selectedLuggageInfo: data } });
+            navigate('/SanBayTrungGian_Sua', { state: { selectedLuggageInfo: data } });
 
         } catch (error) {
             console.error("Lỗi khi lấy thông tin hành lý:", error);
@@ -90,7 +90,7 @@ const HanhLy = () => {
 
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure to delete this Luggage?")) {
+        if (window.confirm("Bạn có đồng ý xóa sân bay trung gian?")) {
             try {
                 
                 const selectedLuggage = selectedLuggages[0];
@@ -150,6 +150,14 @@ const HanhLy = () => {
             }
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
         <div className=" mt-md-6">
@@ -180,7 +188,6 @@ const HanhLy = () => {
                                 onKeyPress={handleKeyPress}
                             />
               </span>
-              <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
             </div>
           </div>
           <table className="table table-bordered">

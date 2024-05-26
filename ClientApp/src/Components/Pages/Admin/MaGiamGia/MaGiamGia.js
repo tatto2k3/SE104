@@ -21,7 +21,7 @@ const MaGiamGia = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     const handleClick = () => {
-        navigate('/MaGiamGia_Them');
+        navigate('/QuyDinh_Them');
     };
 
 
@@ -30,7 +30,7 @@ const MaGiamGia = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/parameters/GetParameters");
+                const response = await fetch("http://localhost:44430/api/parameters/GetParameters");
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {
@@ -58,11 +58,11 @@ const MaGiamGia = () => {
         try {
             console.log(selectedDiscounts.join(','));
             if (selectedDiscounts.length > 0) {
-                const response = await fetch(`/api/parameters/GetParameterDetails?dIds=${selectedDiscounts.join(',')}`);
+                const response = await fetch(`http://localhost:44430/api/parameters/GetParameterDetails?dIds=${selectedDiscounts.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
-                navigate('/MaGiamGia_Sua', { state: { selectedDiscountInfo: data } });
+                navigate('/QuyDinh_Sua', { state: { selectedDiscountInfo: data } });
             } else {
                 console.log("No discounts selected.");
             }
@@ -73,7 +73,7 @@ const MaGiamGia = () => {
 
     const handleDelete = async () => {
         if (selectedDiscounts.length > 0) {
-            if (window.confirm("Are you sure to delete this discount")) {
+            if (window.confirm("Bạn có muốn xóa quy định này?")) {
                 try {
                     const response = await axios.delete('http://localhost:44430/api/parameter', {
                         data: selectedDiscounts, // Pass the array as data
@@ -112,7 +112,7 @@ const MaGiamGia = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`/api/parameter/SearchParameters?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`http://localhost:44430/api/parameter/SearchParameters?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {
@@ -121,7 +121,7 @@ const MaGiamGia = () => {
         }
         else {
             try {
-                const response = await fetch("/api/parameters/GetParameters");
+                const response = await fetch("http://localhost:44430/api/parameters/GetParameters");
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {
@@ -129,6 +129,15 @@ const MaGiamGia = () => {
             }
         }
     };
+
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
   <div className="mt-md-6">
@@ -159,7 +168,6 @@ const MaGiamGia = () => {
                                 onKeyPress={handleKeyPress}
                             />
         </span>
-        <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
     </div>
     <table className="table table-bordered">

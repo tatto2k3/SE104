@@ -20,7 +20,7 @@ const DoAn = () => {
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     const handleClick = () => {
-        navigate('/DoAn_Them');
+        navigate('/GheNgoi_Them');
     };
 
 
@@ -30,7 +30,7 @@ const DoAn = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/seat/GetSeats");
+                const response = await fetch("http://localhost:44430/api/seat/GetSeats");
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
@@ -62,11 +62,11 @@ const DoAn = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedFoods.length > 0) {
-                const response = await fetch(`/api/seat/GetSeatDetails?seatIDs=${selectedFoods.join(',')}`);
+                const response = await fetch(`http://localhost:44430/api/seat/GetSeatDetails?seatIDs=${selectedFoods.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
-                navigate('/DoAn_Sua', { state: { selectedFoodInfo: data } });
+                navigate('/GheNgoi_Sua', { state: { selectedFoodInfo: data } });
             } else {
                 console.log("No Foods selected.");
             }
@@ -76,7 +76,7 @@ const DoAn = () => {
     };
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure to delete this Seat")) {
+        if (window.confirm("Bạn có chắc chắn xóa ghế này?")) {
             try {
                 const response = await axios.delete('http://localhost:44430/api/seat', {
                     data: selectedFoods, // Pass the array as data
@@ -130,11 +130,19 @@ const DoAn = () => {
             }
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
   <div className="mt-md-6">
     <div className="navbar d-flex justify-content-between align-items-center">
-      <h2 className="main-name mb-0">Thông tin thực đơn</h2>
+      <h2 className="main-name mb-0">Thông tin loại ghế</h2>
       {/* Actions: Đổi mật khẩu và Xem thêm thông tin */}
       <div className="dropdown">
         <a className="d-flex align-items-center dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -160,7 +168,6 @@ const DoAn = () => {
                                 onKeyPress={handleKeyPress}
                             />
         </span>
-        <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
       </div>
     </div>
     <table className="table table-bordered">

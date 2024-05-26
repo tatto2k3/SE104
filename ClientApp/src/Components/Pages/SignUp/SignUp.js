@@ -23,11 +23,10 @@ export default function SignUp() {
             email: email,
             password: password,
             name: name,
-            position: 'Khách hàng'
 
         };
         try {
-            const response = await fetch('https://0e59-14-169-3-149.ngrok-free.app/api/account/register', {
+            const response = await fetch('http://localhost:44430/api/account/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,6 +36,7 @@ export default function SignUp() {
             if (response.ok) {
                 const responseData = await response.json();
                 console.log('Response Data:', responseData);
+                window.location.href = '/sign-in';
 
                 // Chuyển hướng đến trang đăng nhập
               

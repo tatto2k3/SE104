@@ -23,7 +23,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
             if (user_staff != null)
             {
-                return Ok(new { RedirectUrl = "/KhachHang" });
+                return Ok(new { RedirectUrl = "/ChuyenBay" });
             }
 
             // Đăng nhập không thành công

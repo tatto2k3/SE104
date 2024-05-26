@@ -32,7 +32,7 @@ const SanBay = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/sanbay/GetSanbays");
+                const response = await fetch("http://localhost:44430/api/sanbay/GetSanbays");
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {
@@ -59,7 +59,7 @@ const SanBay = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedSanbays.length > 0) {
-                const response = await fetch(`/api/sanbay/GetSanbayDetails?airportIds=${selectedSanbays.join(',')}`);
+                const response = await fetch(`http://localhost:44430/api/sanbay/GetSanbayDetails?airportIds=${selectedSanbays.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -73,7 +73,7 @@ const SanBay = () => {
     };
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure to delete this Sanbay")) {
+        if (window.confirm("Bạn có chắc chắn xóa sân bay này?")) {
             try {
                 const response = await axios.delete('http://localhost:44430/api/sanbay', {
                     data: selectedSanbays, // Pass the array as data
@@ -110,7 +110,7 @@ const SanBay = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`/api/sanbay/SearchSanbays?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`http://localhost:44430/api/sanbay/SearchSanbays?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {
@@ -119,7 +119,7 @@ const SanBay = () => {
         }
         else {
             try {
-                const response = await fetch("/api/sanbay/GetSanbays");
+                const response = await fetch("http://localhost:44430/api/sanbay/GetSanbays");
                 const data = await response.json();
                 setSanbays(data);
             } catch (error) {
@@ -127,6 +127,14 @@ const SanBay = () => {
             }
         }
     };
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="col-md-12 main">
   <div className="mt-md-6">
@@ -157,7 +165,7 @@ const SanBay = () => {
                                 onKeyPress={handleKeyPress}
                             />
         </span>
-        <span className="second">Filters <i className="bi bi-chevron-compact-down" /></span>
+
       </div>
     </div>
     <table className="table table-bordered">

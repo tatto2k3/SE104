@@ -13,12 +13,12 @@ const SuaVe = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
-        fetch("/api/chuyenbaysanbay/GetFlyID")
+        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("/api/ticket/GetSeatID")
+        fetch("http://localhost:44430/api/ticket/GetSeatID")
             .then(response => response.json())
             .then(data => setSeatIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
@@ -95,7 +95,7 @@ const SuaVe = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('api/ticket/UpdateTicket', {
+            const response = await fetch('http://localhost:44430/api/ticket/UpdateTicket', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +117,14 @@ const SuaVe = () => {
             alert(err.message);
         }
     };
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (

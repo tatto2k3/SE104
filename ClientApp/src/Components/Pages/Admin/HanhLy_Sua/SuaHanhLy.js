@@ -72,7 +72,7 @@ const SuaHanhLy = () => {
                 return;
             }
 
-            const response = await fetch('api/chuyenbaysanbay/UpdateLuggage', {
+            const response = await fetch('http://localhost:44430/api/chuyenbaysanbay/UpdateLuggage', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,11 +88,18 @@ const SuaHanhLy = () => {
             setShowSuccessMessage(true);
             setTimeout(() => setShowSuccessMessage(false), 3000);
         } catch (err) {
-            alert("Lỗi: " + err.message);
+            alert("Lỗi: " + err.response);
         }
     };
 
-
+    if (!localStorage.getItem('emailNhanVien')) {
+        return (
+            <div className="containerPersonal">
+                <div className="text-insertPersonal">
+                </div>
+            </div>
+        );
+    }
     return (
         <div className="container-fluid">
             {showSuccessMessage && (
@@ -174,7 +181,7 @@ const SuaHanhLy = () => {
                 </form>
             </div>
             <div className="back">
-                <a href="./HanhLy" className="text-decoration-underline-mk">Quay lại trang dành cho hành lý</a>
+                <a href="./SanBayTrungGian" className="text-decoration-underline-mk">Quay lại trang dành cho sân bay trung gian</a>
             </div>
         </div>
     );
