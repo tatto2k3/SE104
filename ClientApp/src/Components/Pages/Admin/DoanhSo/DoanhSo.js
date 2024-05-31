@@ -49,7 +49,7 @@ const DoanhSo = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:44430/api/doanhthu/GetDoanhSo?year=2024");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/doanhthu/GetDoanhSo?year=2024");
                 const data = await response.json();
                 console.log(data);
                 setDetails(data);
@@ -65,7 +65,7 @@ const DoanhSo = () => {
 
     const fetchDoanhSoData = async () => {
         try {
-            const response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhSo?year=${year}`);
+            const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/doanhthu/GetDoanhSo?year=${year}`);
             const data = await response.json();
             setChartData(data);
         } catch (error) {
@@ -85,12 +85,12 @@ const DoanhSo = () => {
 
             if (reportType === "nam") {
                 console.log("hihi");
-                response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhThuNam?year=${searchData.year}`);
+                response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/doanhthu/GetDoanhThuNam?year=${searchData.year}`);
                 console.log(response);
                 console.log("hoho");
 
             } else {
-                response = await fetch(`http://localhost:44430/api/doanhthu/GetDoanhThuThang?year=${searchData.year}&month=${searchData.month}`);
+                response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/doanhthu/GetDoanhThuThang?year=${searchData.year}&month=${searchData.month}`);
             }
 
             if (!response.ok) {

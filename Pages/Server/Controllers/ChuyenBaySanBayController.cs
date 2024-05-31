@@ -61,7 +61,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
         public IActionResult GetAirportID()
         {
             try
-            {
+            {     
                 var flyIDs = _dbContext.Sanbays.Select(cs => cs.AirportId).Distinct().ToList();
                 return Ok(flyIDs);
             }
@@ -106,6 +106,17 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     int timeRule = (int)timeMaxRule.Value;
                     if (chuyenbay_sanbay.Time > timeRule) return StatusCode(500, "Thời gian dừng lớn hơn mức cho phép");
                 }
+
+                var flight = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == chuyenbay_sanbay.FlyId);
+                var AirportFrom = _dbContext.Sanbays.FirstOrDefault(p => p.Place == flight.FromLocation);
+                var AirportTo = _dbContext.Sanbays.FirstOrDefault(p => p.Place == flight.ToLocation);
+
+                if (chuyenbay_sanbay.AirportId == AirportFrom.AirportId || chuyenbay_sanbay.AirportId == AirportTo.AirportId)
+                {
+                    return StatusCode(500, "Sân bay trung gian bị trùng với điểm đi hoặc điểm đến");
+                }
+
+
 
                 _dbContext.Chuyenbay_Sanbays.Add(chuyenbay_sanbay);
                 _dbContext.SaveChanges();

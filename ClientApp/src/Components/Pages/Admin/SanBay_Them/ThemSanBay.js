@@ -21,7 +21,7 @@ const ThemSanBay = () => {
             place: place,
         };
         try {
-            const sanbayResponse = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/sanbay/AddSanbay", {
+            const sanbayResponse = await fetch("http://localhost:44430/api/sanbay/AddSanbay", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

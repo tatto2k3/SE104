@@ -16,7 +16,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('http://localhost:44430/api/account/login', {
+        const response = await fetch('https://2b0c-113-161-73-175.ngrok-free.app/api/account/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

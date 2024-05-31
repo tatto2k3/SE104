@@ -11,7 +11,7 @@ const MaGiamGia = () => {
     const [discounts, setDiscounts] = useState([]);
     const [selectedDiscounts, setSelectedDiscounts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(8);
+    const [itemsPerPage] = useState(9);
     const navigate = useNavigate();
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -30,7 +30,7 @@ const MaGiamGia = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameters/GetParameters");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/parameters/GetParameters");
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {
@@ -58,7 +58,7 @@ const MaGiamGia = () => {
         try {
             console.log(selectedDiscounts.join(','));
             if (selectedDiscounts.length > 0) {
-                const response = await fetch(`https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameters/GetParameterDetails?dIds=${selectedDiscounts.join(',')}`);
+                const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/parameters/GetParameterDetails?dIds=${selectedDiscounts.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -75,7 +75,7 @@ const MaGiamGia = () => {
         if (selectedDiscounts.length > 0) {
             if (window.confirm("Bạn có muốn xóa quy định này?")) {
                 try {
-                    const response = await axios.delete('https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameter', {
+                    const response = await axios.delete('https://2b0c-113-161-73-175.ngrok-free.app/api/parameter', {
                         data: selectedDiscounts, // Pass the array as data
                         headers: {
                             'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const MaGiamGia = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameter/SearchParameters?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/parameter/SearchParameters?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {
@@ -121,7 +121,7 @@ const MaGiamGia = () => {
         }
         else {
             try {
-                const response = await fetch("https://cf43-2402-9d80-305-78ad-a85b-d50b-d547-14b6.ngrok-free.app/api/parameters/GetParameters");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/parameters/GetParameters");
                 const data = await response.json();
                 setDiscounts(data);
             } catch (error) {

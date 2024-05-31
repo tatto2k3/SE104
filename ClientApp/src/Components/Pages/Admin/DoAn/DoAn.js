@@ -30,7 +30,7 @@ const DoAn = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:44430/api/seat/GetSeats");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/seat/GetSeats");
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
@@ -62,7 +62,7 @@ const DoAn = () => {
     const handleShowInfo = async () => {
         try {
             if (selectedFoods.length > 0) {
-                const response = await fetch(`http://localhost:44430/api/seat/GetSeatDetails?seatIDs=${selectedFoods.join(',')}`);
+                const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/seat/GetSeatDetails?seatIDs=${selectedFoods.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -78,7 +78,7 @@ const DoAn = () => {
     const handleDelete = async () => {
         if (window.confirm("Bạn có chắc chắn xóa ghế này?")) {
             try {
-                const response = await axios.delete('http://localhost:44430/api/seat', {
+                const response = await axios.delete('https://2b0c-113-161-73-175.ngrok-free.app/api/seat', {
                     data: selectedFoods, // Pass the array as data
                     headers: {
                         'Content-Type': 'application/json',

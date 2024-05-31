@@ -83,8 +83,6 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 }
 
 
-
-                // Tìm kiếm khách hàng dựa trên id (hoặc mã khách hàng, tùy thuộc vào cách bạn xác định)
                 var existingParameter = await _dbContext.Parameters.FindAsync(objParameter.Label);
 
                 if (existingParameter == null)

@@ -51,7 +51,7 @@ const ThemChuyenBay = () => {
         }
 
         try {
-            const flightResponse = await fetch("http://localhost:44430/api/chuyenbay/AddChuyenbay", {
+            const flightResponse = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbay/AddChuyenbay", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

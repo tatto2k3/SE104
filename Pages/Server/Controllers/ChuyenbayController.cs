@@ -35,7 +35,16 @@ namespace BlueStarMVC.Pages.Server.Controllers
             {
 
 
+
+
+
+
+
+
+
                 int countTicket = _dbContext.Tickets.Count(p => p.FlyId == chuyenbay.FlyId);
+                chuyenbay.SeatBooked = countTicket;
+                
 
 
                 var trunggianList = _dbContext.Chuyenbay_Sanbays
@@ -225,6 +234,12 @@ namespace BlueStarMVC.Pages.Server.Controllers
             {
                 return NotFound("No matching chuyenbays found");
             }
+
+            var chuyenbaysanbay = _dbContext.Chuyenbay_Sanbays.FirstOrDefault(p => p.FlyId == chuyenbays[0].FlyId);
+            var ticket = _dbContext.Tickets.FirstOrDefault(p => p.FlyId == chuyenbays[0].FlyId);
+            if (chuyenbaysanbay != null || ticket != null) return BadRequest("No chuyenbay IDs provided");
+
+
 
             _dbContext.Chuyenbays.RemoveRange(chuyenbays);
             await _dbContext.SaveChangesAsync();

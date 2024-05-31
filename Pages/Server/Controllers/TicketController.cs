@@ -1,4 +1,5 @@
 ﻿using BlueStarMVC.Models;
+using BlueStarMVC.Pages.Server.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,10 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
             try
             {
+
+                
+
+
                 DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
                 DateTime departureDay; // Đây là ngày hiện tại
 
@@ -82,6 +87,10 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     {
                         return BadRequest("Invalid date format");
                     }
+
+                    if (flightRule.SeatEmpty == flightRule.SeatBooked) return StatusCode(500, "Không thể đặt vé do hết số lượng trống.");
+
+
                 }
                 else
                 {
@@ -112,6 +121,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                 var fly = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == ticket.FlyId);
                 fly.SeatEmpty = fly.SeatEmpty - 1;
+                fly.SeatBooked = fly.SeatBooked + 1;
 
                 _dbContext.Tickets.Add(ticket);
                 _dbContext.SaveChanges();
@@ -199,6 +209,7 @@ namespace BlueStarMVC.Pages.Server.Controllers
 
                 var fly = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == ticket.FlyId);
                 fly.SeatEmpty = fly.SeatEmpty - 1;
+                fly.SeatBooked = fly.SeatBooked + 1;
 
                 _dbContext.Tickets.Add(ticket);
                 _dbContext.SaveChanges();
@@ -258,6 +269,8 @@ namespace BlueStarMVC.Pages.Server.Controllers
                     return NotFound("Ticket not found");
                 }
 
+
+
                 DateTime flightDay; // Đây là ngày khởi hành của chuyến bay
                 DateTime departureDay; // Đây là ngày hiện tại
 
@@ -306,6 +319,13 @@ namespace BlueStarMVC.Pages.Server.Controllers
                 float percentage = seatType.percent / 100.0f;
                 int ticketPrice = (int)(flight.OriginalPrice * percentage);
                 existingTicket.TicketPrice = ticketPrice;
+
+                int countTicket = _dbContext.Tickets.Count(p => p.FlyId == flight.FlyId);
+                flight.SeatBooked = countTicket;
+                flight.SeatEmpty -= 1;
+
+
+
 
 
 
@@ -367,6 +387,10 @@ namespace BlueStarMVC.Pages.Server.Controllers
             {
                 return StatusCode(500, "Không thể hủy vé do quá hạn");
             }
+
+            var fly = _dbContext.Chuyenbays.FirstOrDefault(p => p.FlyId == Tickets[0].FlyId);
+            fly.SeatEmpty = fly.SeatEmpty + 1;
+            fly.SeatBooked = fly.SeatBooked - 1;
 
 
             _dbContext.Tickets.RemoveRange(Tickets);

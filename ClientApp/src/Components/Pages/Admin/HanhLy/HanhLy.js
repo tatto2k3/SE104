@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:44430/api/', // điều chỉnh URL nếu cần thiết
+    baseURL: 'https://2b0c-113-161-73-175.ngrok-free.app/api/', // điều chỉnh URL nếu cần thiết
     headers: {
         'Content-Type': 'application/json',
     },
@@ -31,7 +31,7 @@ const HanhLy = () => {
     };
 
     useEffect(() => {
-        fetch("http://localhost:44430/api/chuyenbaysanbay/GetChuyenbay_Sanbays")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/GetChuyenbay_Sanbays")
             .then(response => response.json())
             .then(responseJson => {
                 console.log(responseJson);
@@ -77,7 +77,7 @@ const HanhLy = () => {
 
             const { FlyId, AirportId } = selectedLuggage; // Giả sử FlyId và AirportId là các thuộc tính cần thiết
 
-            const response = await axiosInstance.get(`http://localhost:44430/api/chuyenbaysanbay/GetLuggageDetails?FlyId=${selectedLuggage.flyId}&AirportId=${selectedLuggage.airportId}`);
+            const response = await axiosInstance.get(`https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/GetLuggageDetails?FlyId=${selectedLuggage.flyId}&AirportId=${selectedLuggage.airportId}`);
 
             const data = response.data;
 
@@ -95,7 +95,7 @@ const HanhLy = () => {
                 
                 const selectedLuggage = selectedLuggages[0];
 
-                const response = await axios.delete(`http://localhost:44430/api/chuyenbaysanbay/DeleteLuggage`, {
+                const response = await axios.delete(`https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/DeleteLuggage`, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

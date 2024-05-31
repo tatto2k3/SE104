@@ -16,12 +16,12 @@ const ThemVe = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("http://localhost:44430/api/ticket/GetSeatID")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetSeatID")
             .then(response => response.json())
             .then(data => setSeatIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
@@ -45,7 +45,7 @@ const ThemVe = () => {
             sdt: sdt,
         };
         try {
-            const ticketResponse = await fetch("http://localhost:44430/api/ticket/AddTicket", {
+            const ticketResponse = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/AddTicket", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

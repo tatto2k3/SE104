@@ -72,7 +72,7 @@ const SuaHanhLy = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:44430/api/chuyenbaysanbay/UpdateLuggage', {
+            const response = await fetch('https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/UpdateLuggage', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

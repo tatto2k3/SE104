@@ -20,7 +20,7 @@ const ThemDoAn = () => {
 
         };
         try {
-            const FoodResponse = await fetch("http://localhost:44430/api/seat/AddSeats", {
+            const FoodResponse = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/seat/AddSeats", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

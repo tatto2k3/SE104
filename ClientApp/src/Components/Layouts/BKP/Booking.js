@@ -17,7 +17,7 @@ export default function Booking() {
     const GetAllCountries = async () => {
         try {
             const response = await axios.get(
-                "http://localhost:44430/api/sanbay/GetSanbays"
+                "https://2b0c-113-161-73-175.ngrok-free.app/api/sanbay/GetSanbays"
             );
             setCountries(response.data);
         } catch (error) {
@@ -280,7 +280,7 @@ export default function Booking() {
 
                             console.log(searchInfo.DepartTime.length);
                                 setIsLoading(true);
-                            axios.get(`http://localhost:44430/api/flight/SearchFlight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
+                            axios.get(`https://2b0c-113-161-73-175.ngrok-free.app/api/flight/SearchFlight?FromLocation=${searchInfo.FromLocation}&ToLocation=${searchInfo.ToLocation}
                                 &DepatureDay=${searchInfo.DepartTime}`)
                                     .then(res => {
                                         setSearchResult(res.data)

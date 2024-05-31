@@ -113,7 +113,7 @@ export default function MainLayOut({ children }) {
 
         console.log(ticketData);
         try {
-            const ticketResponse = await fetch("http://localhost:44430/api/ticket/AddTicketNew", {
+            const ticketResponse = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/AddTicketNew", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

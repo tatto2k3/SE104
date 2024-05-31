@@ -13,12 +13,12 @@ const SuaVe = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:44430/api/chuyenbaysanbay/GetFlyID")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbaysanbay/GetFlyID")
             .then(response => response.json())
             .then(data => setFlyIDs(data))
             .catch(error => console.error("Error fetching fly IDs:", error));
 
-        fetch("http://localhost:44430/api/ticket/GetSeatID")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetSeatID")
             .then(response => response.json())
             .then(data => setSeatIDs(data))
             .catch(error => console.error("Error fetching airport IDs:", error));
@@ -67,6 +67,7 @@ const SuaVe = () => {
         });
     };
 
+    console.log("tIdOld:", selectedTicketInfo[0]?.flyId)
 
     // Phía máy khách - SuaKhachHang.js
     const handleSave = async function update(event) {
@@ -95,7 +96,7 @@ const SuaVe = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('http://localhost:44430/api/ticket/UpdateTicket', {
+            const response = await fetch('https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/UpdateTicket', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

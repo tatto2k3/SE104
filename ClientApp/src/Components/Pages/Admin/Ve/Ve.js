@@ -24,7 +24,7 @@ const Ve = () => {
     };
 
     useEffect(() => {
-        fetch("http://localhost:44430/api/ticket/GetTickets")
+        fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetTickets")
             .then(response => response.json())
             .then(responseJson => {
                 console.log(responseJson);
@@ -42,7 +42,7 @@ const Ve = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:44430/api/ticket/GetTickets");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetTickets");
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {
@@ -71,7 +71,7 @@ const Ve = () => {
             if (selectedTickets.length > 0) {
 
                
-                const response = await fetch(`http://localhost:44430/api/ticket/GetTicketDetails?tIds=${selectedTickets.join(',')}`);
+                const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetTicketDetails?tIds=${selectedTickets.join(',')}`);
                 const data = await response.json();
 
                 // Chuyển hướng sang trang sửa khách hàng và truyền thông tin khách hàng
@@ -89,7 +89,7 @@ const Ve = () => {
         if (selectedTickets.length > 0) {
             if (window.confirm("Bạn có chắc chắn xóa vé này không")) {
                 try {
-                    const response = await axios.delete(`http://localhost:44430/api/ticket?ticketIds=${selectedTickets.join(',')}`);
+                    const response = await axios.delete(`https://2b0c-113-161-73-175.ngrok-free.app/api/ticket?ticketIds=${selectedTickets.join(',')}`);
                     console.log(response.data);
 
                     if (response.status === 200) {
@@ -124,7 +124,7 @@ const Ve = () => {
     const handleSearch = async () => {
         if (searchKeyword != "") {
             try {
-                const response = await fetch(`http://localhost:44430/api/ticket/SearchTickets?searchKeyword=${searchKeyword}`);
+                const response = await fetch(`https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/SearchTickets?searchKeyword=${searchKeyword}`);
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {
@@ -133,7 +133,7 @@ const Ve = () => {
         }
         else {
             try {
-                const response = await fetch("http://localhost:44430/api/ticket/GetTickets");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/ticket/GetTickets");
                 const data = await response.json();
                 setTickets(data);
             } catch (error) {

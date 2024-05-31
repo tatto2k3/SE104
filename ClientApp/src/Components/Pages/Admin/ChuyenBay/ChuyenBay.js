@@ -32,7 +32,7 @@ const ChuyenBay = () => {
         // Lấy danh sách khách hàng từ API hoặc nguồn dữ liệu khác
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:44430/api/chuyenbay/GetChuyenbays");
+                const response = await fetch("https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbay/GetChuyenbays");
                 const data = await response.json();
                 console.log(data);
                 setChuyenbays(data);
@@ -99,7 +99,7 @@ const ChuyenBay = () => {
                     return;
                 }
                 try {
-                    const response = await axios.delete('http://localhost:44430/api/chuyenbay', {
+                    const response = await axios.delete('https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbay', {
                         data: selectedChuyenbays, // Pass the array as data
                         headers: {
                             'Content-Type': 'application/json',

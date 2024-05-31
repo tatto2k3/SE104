@@ -95,7 +95,7 @@ const SuaChuyenBay = () => {
             }
 
             // Sử dụng fetch để thực hiện yêu cầu PUT
-            const response = await fetch('http://localhost:44430/api/chuyenbay/UpdateChuyenbay', {
+            const response = await fetch('https://2b0c-113-161-73-175.ngrok-free.app/api/chuyenbay/UpdateChuyenbay', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
